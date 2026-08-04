@@ -2,6 +2,7 @@
 
 import { ChevronDown, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -90,7 +91,7 @@ export function Navbar({ logo, items, cta, className }: NavbarProps) {
                 size="sm"
                 className="hidden md:inline-flex"
               >
-                <a href={cta.href}>{cta.label}</a>
+                <Link href={cta.href}>{cta.label}</Link>
               </Button>
             )}
             <Button
@@ -172,13 +173,13 @@ export function Navbar({ logo, items, cta, className }: NavbarProps) {
                               .flatMap((column) => column.links)
                               .map((link) => (
                                 <li key={link.href}>
-                                  <a
+                                  <Link
                                     href={link.href}
                                     onClick={closeMobileMenu}
                                     className="block py-1 text-body-md text-content-secondary"
                                   >
                                     {link.label}
-                                  </a>
+                                  </Link>
                                 </li>
                               ))}
                           </ul>
@@ -187,15 +188,19 @@ export function Navbar({ logo, items, cta, className }: NavbarProps) {
                     </AnimatePresence>
                   </motion.div>
                 ) : (
-                  <motion.a
+                  <motion.div
                     key={item.label}
                     variants={fadeUp}
-                    href={item.href ?? "#"}
-                    onClick={closeMobileMenu}
-                    className="border-b border-hairline-subtle py-4 font-display text-heading-02"
+                    className="border-b border-hairline-subtle"
                   >
-                    {item.label}
-                  </motion.a>
+                    <Link
+                      href={item.href ?? "#"}
+                      onClick={closeMobileMenu}
+                      className="block py-4 font-display text-heading-02"
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
                 ),
               )}
               {cta && (
@@ -206,9 +211,9 @@ export function Navbar({ logo, items, cta, className }: NavbarProps) {
                     size="lg"
                     className="w-full"
                   >
-                    <a href={cta.href} onClick={closeMobileMenu}>
+                    <Link href={cta.href} onClick={closeMobileMenu}>
                       {cta.label}
-                    </a>
+                    </Link>
                   </Button>
                 </motion.div>
               )}

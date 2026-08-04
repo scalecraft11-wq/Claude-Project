@@ -15,7 +15,6 @@ import { MagneticButton } from "@/components/shared/magnetic-button";
 
 import { useBreakpoint } from "@/hooks/use-media-query";
 import { useDeviceTier } from "@/hooks/use-device-tier";
-import { useLenis } from "@/hooks/use-lenis";
 import { useMounted } from "@/hooks/use-mounted";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { ScrollTrigger, registerGsap } from "@/lib/animation/gsap";
@@ -65,7 +64,13 @@ export function HeroSection() {
   const isDesktop = useBreakpoint("lg");
   const [mobileExploreEnabled, setMobileExploreEnabled] = React.useState(false);
 
-  useLenis();
+  // Lenis is mounted once at the page/layout root (see
+  // components/providers/lenis-provider.tsx), not here — a section must
+  // never create its own competing scroll-smoothing instance
+  // (hooks/use-lenis.ts's own docstring says as much). This section's GSAP
+  // ScrollTrigger pin below still stays in sync with it: any single Lenis
+  // instance feeding `ScrollTrigger.update()` keeps every ScrollTrigger on
+  // the page correctly synced, not just the one that created it.
 
   const canRenderScene =
     mounted && deviceTier !== "tier3" && !prefersReducedMotion;

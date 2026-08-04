@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -81,14 +82,14 @@ export function Pagination({
 
     if (hrefForPage) {
       return (
-        <a
+        <Link
           href={hrefForPage(page)}
           aria-label={label}
           aria-current={isCurrent ? "page" : undefined}
           className={sharedClassName}
         >
           {content}
-        </a>
+        </Link>
       );
     }
 

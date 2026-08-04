@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import Link from "next/link";
 
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { Button } from "@/components/ui/button";
@@ -86,7 +87,7 @@ export function PricingCard({
           size="lg"
           className="w-full"
         >
-          <a href={cta.href}>{cta.label}</a>
+          <Link href={cta.href}>{cta.label}</Link>
         </Button>
       </div>
     </ScrollReveal>

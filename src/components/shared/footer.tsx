@@ -1,3 +1,4 @@
+import Link from "next/link";
 import * as React from "react";
 
 import type { NavLinkItem } from "@/components/shared/mega-menu";
@@ -72,12 +73,12 @@ export function Footer({
               <ul className="grid gap-2">
                 {column.links.map((link) => (
                   <li key={link.href}>
-                    <a
+                    <Link
                       href={link.href}
                       className="text-body-sm text-content-secondary transition-colors duration-fast hover:text-content-primary"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -91,12 +92,12 @@ export function Footer({
             <ul className="flex flex-wrap gap-6">
               {bottomLinks.map((link) => (
                 <li key={link.href}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-body-sm text-content-muted transition-colors duration-fast hover:text-content-primary"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

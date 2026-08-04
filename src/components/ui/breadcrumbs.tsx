@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 
 import { breadcrumbJsonLd } from "@/lib/seo/json-ld";
@@ -55,12 +56,12 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
                     {item.label}
                   </span>
                 ) : (
-                  <a
+                  <Link
                     href={item.href}
                     className="text-body-sm text-content-secondary transition-colors duration-fast hover:text-content-primary"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 )}
               </li>
             );

@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 
@@ -33,7 +34,7 @@ export function ProductCard({
   return (
     <ScrollReveal as="article">
       <div className={cn("group relative", className)}>
-        <a href={href} className="block">
+        <Link href={href} className="block">
           <div className="relative aspect-square overflow-hidden rounded-lg bg-surface-raised shadow-elevation-1">
             <Image
               src={imageUrl}
@@ -52,7 +53,7 @@ export function ProductCard({
               {formatCurrency(priceCents)}
             </p>
           </div>
-        </a>
+        </Link>
 
         {onQuickAdd && (
           <button

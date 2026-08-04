@@ -2,6 +2,7 @@
 
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -92,7 +93,7 @@ export function MegaMenu({ items, className }: MegaMenuProps) {
                             {column.links.map((link) => (
                               <li key={link.href}>
                                 <NavigationMenuPrimitive.Link asChild>
-                                  <a
+                                  <Link
                                     href={link.href}
                                     className="group/link block rounded-sm px-2 py-1.5 transition-colors duration-fast hover:bg-surface-raised"
                                   >
@@ -104,7 +105,7 @@ export function MegaMenu({ items, className }: MegaMenuProps) {
                                         {link.description}
                                       </span>
                                     )}
-                                  </a>
+                                  </Link>
                                 </NavigationMenuPrimitive.Link>
                               </li>
                             ))}
@@ -114,7 +115,7 @@ export function MegaMenu({ items, className }: MegaMenuProps) {
                     </div>
                     {item.featured && (
                       <NavigationMenuPrimitive.Link asChild>
-                        <a
+                        <Link
                           href={item.featured.href}
                           className="group/featured rounded-md bg-surface-raised p-4"
                         >
@@ -134,7 +135,7 @@ export function MegaMenu({ items, className }: MegaMenuProps) {
                               {item.featured.description}
                             </p>
                           )}
-                        </a>
+                        </Link>
                       </NavigationMenuPrimitive.Link>
                     )}
                   </div>
@@ -142,12 +143,12 @@ export function MegaMenu({ items, className }: MegaMenuProps) {
               </>
             ) : (
               <NavigationMenuPrimitive.Link asChild>
-                <a
-                  href={item.href}
+                <Link
+                  href={item.href ?? "#"}
                   className="block rounded-sm px-3 py-2 text-body-sm font-medium text-content-primary transition-colors duration-fast hover:text-accent"
                 >
                   {item.label}
-                </a>
+                </Link>
               </NavigationMenuPrimitive.Link>
             )}
           </NavigationMenuPrimitive.Item>

@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,7 @@ export interface CookieBannerProps {
  */
 export function CookieBanner({
   storageKey = "cookie-consent",
-  policyHref = "/legal/privacy",
+  policyHref = "/faq#privacy-and-cookies",
   onConsentChange,
 }: CookieBannerProps) {
   const [consent, setConsent] = React.useState<CookieConsent | null>(null);
@@ -56,12 +57,12 @@ export function CookieBanner({
           <p className="text-body-sm text-content-secondary">
             We use cookies to improve your experience and understand how the
             site is used. Read our{" "}
-            <a
+            <Link
               href={policyHref}
               className="text-content-primary underline underline-offset-2"
             >
               privacy policy
-            </a>
+            </Link>
             .
           </p>
           <div className="mt-4 flex gap-3">
