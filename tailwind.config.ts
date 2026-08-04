@@ -164,10 +164,15 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-16px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.25s cubic-bezier(0.65, 0, 0.35, 1)",
         "accordion-up": "accordion-up 0.25s cubic-bezier(0.65, 0, 0.35, 1)",
+        float: "float 6s cubic-bezier(0.45, 0, 0.55, 1) infinite",
       },
     },
   },

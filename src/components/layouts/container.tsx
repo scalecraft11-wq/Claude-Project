@@ -23,10 +23,19 @@ export interface ContainerProps extends React.HTMLAttributes<HTMLElement> {
  */
 export const Container = React.forwardRef<HTMLElement, ContainerProps>(
   ({ className, size = "xl", as, ...props }, ref) => {
-    const Component = (as ?? "div") as React.ElementType;
+    // Narrowed to a concrete div-like shape rather than the bare
+    // `React.ElementType` — with @react-three/fiber in the project,
+    // `JSX.IntrinsicElements` now also includes three.js tags, and casting
+    // to the *unconstrained* `React.ElementType` forces TS to satisfy every
+    // tag in that much larger union at once (collapsing `className` etc. to
+    // `never`). Every tag this component actually renders is HTML-div-like,
+    // so that's the shape we assert.
+    const Component = (as ?? "div") as unknown as React.ComponentType<
+      React.ComponentPropsWithRef<"div">
+    >;
     return (
       <Component
-        ref={ref}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={cn(
           "mx-auto w-full px-5 md:px-8",
           containerSizes[size],

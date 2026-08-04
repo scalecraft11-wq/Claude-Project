@@ -29,10 +29,14 @@ export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
  */
 export const Section = React.forwardRef<HTMLElement, SectionProps>(
   ({ className, spacing = "md", as, ...props }, ref) => {
-    const Component = (as ?? "section") as React.ElementType;
+    // See Container.tsx for why this is narrowed rather than cast to the
+    // bare `React.ElementType`.
+    const Component = (as ?? "section") as unknown as React.ComponentType<
+      React.ComponentPropsWithRef<"div">
+    >;
     return (
       <Component
-        ref={ref}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={cn(spacingTop[spacing], spacingBottom[spacing], className)}
         {...props}
       />
