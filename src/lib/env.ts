@@ -21,14 +21,18 @@ const serverSchema = z.object({
   // Populated as each integration is wired up (ARCHITECTURE.md §33/§34) —
   // left optional at the foundation stage so `next dev`/`next build` don't
   // fail before there's anything to connect to yet.
+  // Prisma 7's driver-adapter model has no first-class "direct URL for
+  // migrations vs. pooled URL for runtime" split at the config level (see
+  // prisma.config.ts) — a single DATABASE_URL covers both for now.
   DATABASE_URL: z.string().url().optional(),
-  DIRECT_URL: z.string().url().optional(),
   REDIS_URL: z.string().url().optional(),
 
   NEXTAUTH_URL: z.string().url().optional(),
   NEXTAUTH_SECRET: z.string().min(1).optional(),
   GOOGLE_CLIENT_ID: z.string().min(1).optional(),
   GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
+  GITHUB_CLIENT_ID: z.string().min(1).optional(),
+  GITHUB_CLIENT_SECRET: z.string().min(1).optional(),
 
   STRIPE_SECRET_KEY: z.string().min(1).optional(),
   STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),

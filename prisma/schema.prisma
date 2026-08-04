@@ -1,0 +1,137 @@
+// Prisma schema — authentication + RBAC data layer (ARCHITECTURE.md §14/§16/§17).
+// PostgreSQL via Prisma; NextAuth (Auth.js) v5 owns the User/Account/Session/
+// VerificationToken shape below via @auth/prisma-adapter, extended with the
+// app's own role, password, and token-lifecycle fields.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+// Connection URL lives in prisma.config.ts (Prisma 7 no longer reads it
+// from the schema file) and is passed to PrismaClient at runtime via
+// `datasourceUrl` in lib/prisma.ts — both read from the same DATABASE_URL
+// env var, so there's still exactly one place this is configured.
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Identity ─────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  MANAGER
+  EDITOR
+  CUSTOMER
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+
+  /// Null for OAuth-only accounts (Google/GitHub) that never set a password.
+  passwordHash String?
+
+  role Role @default(CUSTOMER)
+
+  /// Bumped on password change/reset so any JWT issued before that moment
+  /// fails its version check on next request — the mechanism that makes a
+  /// stateless JWT session still revocable (see lib/auth/config.ts).
+  tokenVersion Int @default(0)
+
+  /// Locks the account out of password-based login after repeated failed
+  /// attempts, independent of the IP-based rate limiter (defense in depth
+  /// against a distributed credential-stuffing attempt spread across IPs).
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts                Account[]
+  sessions                Session[]
+  emailVerificationTokens EmailVerificationToken[]
+  passwordResetTokens     PasswordResetToken[]
+
+  @@index([role])
+}
+
+// NextAuth adapter model — OAuth provider account linking (Google, GitHub).
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// NextAuth adapter model — required by @auth/prisma-adapter's types even
+// though the app uses JWT (not database) sessions; left unused at runtime
+// by design (see docs/AUTHENTICATION.md "Why JWT sessions").
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// NextAuth adapter model — backs the Email (magic link) provider only.
+// Kept separate from EmailVerificationToken/PasswordResetToken below so a
+// leaked/expired magic-link token can never double as a password-reset or
+// signup-verification token.
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ── Custom auth token flows ───────────────────────────────────
+
+// Verifies a newly-registered Credentials account's email address. Tokens
+// are stored hashed (see lib/auth/tokens.ts) — the raw token only ever
+// exists in the emailed link, never at rest in the database.
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Forgot/reset password. One-time use (`usedAt`), short-lived, hashed at
+// rest for the same reason as EmailVerificationToken.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}

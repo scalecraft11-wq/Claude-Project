@@ -7,6 +7,7 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { MegaMenu, type NavMenuItem } from "@/components/shared/mega-menu";
+import { NavAuthLink } from "@/components/auth/nav-auth-link";
 
 import { useBrand } from "@/contexts/brand-context";
 import { useLockBodyScroll } from "@/hooks/use-lock-body-scroll";
@@ -84,6 +85,7 @@ export function Navbar({ logo, items, cta, className }: NavbarProps) {
           <MegaMenu items={items} />
 
           <div className="flex items-center gap-3">
+            <NavAuthLink className="hidden md:inline-block" />
             {cta && (
               <Button
                 asChild
@@ -203,6 +205,12 @@ export function Navbar({ logo, items, cta, className }: NavbarProps) {
                   </motion.div>
                 ),
               )}
+              <motion.div
+                variants={fadeUp}
+                className="border-b border-hairline-subtle py-4"
+              >
+                <NavAuthLink onClick={closeMobileMenu} />
+              </motion.div>
               {cta && (
                 <motion.div variants={fadeUp} className="pt-6">
                   <Button

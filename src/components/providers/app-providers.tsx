@@ -1,6 +1,7 @@
 "use client";
 
 import { MotionConfig } from "motion/react";
+import { SessionProvider } from "next-auth/react";
 import type { ReactNode } from "react";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -28,19 +29,21 @@ export function AppProviders({
   children: ReactNode;
 }) {
   return (
-    <BrandProvider brand={brand}>
-      <ThemeProvider brand={brand}>
-        <MotionPreferenceProvider>
-          {/* `reducedMotion="user"` makes every Framer Motion animation in
-              the app honor `prefers-reduced-motion` automatically —
-              ANIMATION_BLUEPRINT.md §28 — without gating each usage by
-              hand. */}
-          <MotionConfig reducedMotion="user">
-            {children}
-            <Toaster />
-          </MotionConfig>
-        </MotionPreferenceProvider>
-      </ThemeProvider>
-    </BrandProvider>
+    <SessionProvider>
+      <BrandProvider brand={brand}>
+        <ThemeProvider brand={brand}>
+          <MotionPreferenceProvider>
+            {/* `reducedMotion="user"` makes every Framer Motion animation in
+                the app honor `prefers-reduced-motion` automatically —
+                ANIMATION_BLUEPRINT.md §28 — without gating each usage by
+                hand. */}
+            <MotionConfig reducedMotion="user">
+              {children}
+              <Toaster />
+            </MotionConfig>
+          </MotionPreferenceProvider>
+        </ThemeProvider>
+      </BrandProvider>
+    </SessionProvider>
   );
 }
