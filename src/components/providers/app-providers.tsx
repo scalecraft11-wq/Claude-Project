@@ -1,8 +1,10 @@
 "use client";
 
+import { MotionConfig } from "motion/react";
 import type { ReactNode } from "react";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 import { BrandProvider, type Brand } from "@/contexts/brand-context";
 import { MotionPreferenceProvider } from "@/contexts/motion-preference-context";
@@ -28,7 +30,16 @@ export function AppProviders({
   return (
     <BrandProvider brand={brand}>
       <ThemeProvider brand={brand}>
-        <MotionPreferenceProvider>{children}</MotionPreferenceProvider>
+        <MotionPreferenceProvider>
+          {/* `reducedMotion="user"` makes every Framer Motion animation in
+              the app honor `prefers-reduced-motion` automatically —
+              ANIMATION_BLUEPRINT.md §28 — without gating each usage by
+              hand. */}
+          <MotionConfig reducedMotion="user">
+            {children}
+            <Toaster />
+          </MotionConfig>
+        </MotionPreferenceProvider>
       </ThemeProvider>
     </BrandProvider>
   );

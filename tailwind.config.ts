@@ -155,6 +155,20 @@ const config: Config = {
       backdropBlur: {
         glass: "20px",
       },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.25s cubic-bezier(0.65, 0, 0.35, 1)",
+        "accordion-up": "accordion-up 0.25s cubic-bezier(0.65, 0, 0.35, 1)",
+      },
     },
   },
   plugins: [animate],
