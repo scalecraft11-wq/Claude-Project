@@ -12,6 +12,11 @@ import { PrismaClient } from "../../generated/prisma/client";
  * Cached on `globalThis` in development so Next.js's hot-reload doesn't
  * spin up a fresh connection pool on every file save — in production each
  * server instance gets exactly one client for its lifetime either way.
+ *
+ * Built lazily behind a `Proxy` rather than at module load: routes that
+ * merely *import* this module (e.g. the NextAuth handler, pulled in by
+ * Next's build-time "Collecting page data" step) must not require a live
+ * `DATABASE_URL` just to be imported — only an actual query should.
  */
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
@@ -31,8 +36,17 @@ function createPrismaClient() {
   });
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+function getPrismaClient(): PrismaClient {
+  if (globalForPrisma.prisma) return globalForPrisma.prisma;
 
-if (env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+  const client = createPrismaClient();
+  if (env.NODE_ENV !== "production") {
+    globalForPrisma.prisma = client;
+  }
+  return client;
 }
+
+export const prisma = new Proxy({} as PrismaClient, {
+  get: (_target, prop, receiver) =>
+    Reflect.get(getPrismaClient(), prop, receiver),
+});

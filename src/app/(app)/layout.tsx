@@ -7,6 +7,10 @@ import { SignOutButton } from "@/components/auth/sign-out-button";
 import { Container } from "@/components/layouts";
 import { requireAuth } from "@/lib/auth/guards";
 
+/** See the matching note in `admin/layout.tsx` — forced explicitly rather
+ * than left to Next's static-optimization inference. */
+export const dynamic = "force-dynamic";
+
 /**
  * Shell for every signed-in app route (`/dashboard`).
  * `requireAuth()` here is the Server Component layer of the same
