@@ -1,0 +1,288 @@
+/**
+ * Design tokens — three-tier architecture (DESIGN_SYSTEM.md §32).
+ *
+ * Tier 1 (primitive)  — raw values, brand-agnostic.
+ * Tier 2 (semantic)   — meaning-based, resolved per [data-brand]/[data-theme].
+ * Tier 3 (component)  — component-scoped, resolved from Tier 2 only.
+ *
+ * Components must only ever consume Tier 2/3 tokens (via the Tailwind
+ * utilities mapped in tailwind.config.ts) — never a Tier 1 primitive
+ * directly. That indirection is what makes re-theming (or adding a third
+ * brand expression later) an additive change instead of a find-and-replace.
+ *
+ * `<html>` carries both `data-brand` ("agency" | "lumora") and `data-theme`
+ * ("light" | "dark"), set by ThemeProvider/BrandProvider — see
+ * src/components/providers/theme-provider.tsx and
+ * src/contexts/brand-context.tsx.
+ */
+
+/* ---------------------------------------------------------------------- */
+/* Tier 1 — Primitives                                                     */
+/* ---------------------------------------------------------------------- */
+
+:root {
+  /* Warm neutral ramp — DESIGN_SYSTEM.md §4.1 */
+  --neutral-0: #ffffff;
+  --neutral-25: #fcfbf9;
+  --neutral-50: #f7f5f2;
+  --neutral-100: #efebe5;
+  --neutral-150: #e4ded5;
+  --neutral-200: #d6cec1;
+  --neutral-300: #bbaf9d;
+  --neutral-400: #998c78;
+  --neutral-500: #7a6e5c;
+  --neutral-600: #5e5445;
+  --neutral-700: #453d32;
+  --neutral-800: #2e2822;
+  --neutral-900: #1c1712;
+  --neutral-950: #0f0c09;
+  --neutral-1000: #000000;
+
+  /* Agency accent — "Signal Copper" — DESIGN_SYSTEM.md §4.2 */
+  --copper-50: #faf1e9;
+  --copper-100: #f1ddc7;
+  --copper-200: #e4be93;
+  --copper-300: #d49c63;
+  --copper-400: #c17f42;
+  --copper-500: #a8632b;
+  --copper-600: #8b4f22;
+  --copper-700: #6e3e1c;
+  --copper-800: #532f16;
+  --copper-900: #3a2110;
+
+  /* Lumora Skin accents — DESIGN_SYSTEM.md §4.3 */
+  --gold-100: #f6ead3;
+  --gold-300: #e3c68f;
+  --gold-500: #c9a15c;
+  --gold-600: #ad8547;
+  --sage-100: #e4e9dd;
+  --sage-300: #a9b79a;
+  --sage-500: #6b7a5e;
+  --sage-700: #4c5842;
+  --clay-100: #f3e1d8;
+  --clay-300: #dda98d;
+  --clay-500: #c17a5c;
+  --clay-700: #8f5540;
+
+  /* Semantic status colors (brand-independent) — DESIGN_SYSTEM.md §4.4 */
+  --status-success: #4b7a5e;
+  --status-warning: #c68a3d;
+  --status-danger: #b3462f;
+  --status-info: #4a6b8a;
+
+  /* Radius primitives — DESIGN_SYSTEM.md §8 */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  /* Macro spacing rhythm (fluid) — DESIGN_SYSTEM.md §5 */
+  --space-section-sm: clamp(3rem, 2rem + 4vw, 5rem);
+  --space-section-md: clamp(5rem, 3rem + 8vw, 9rem);
+  --space-section-lg: clamp(7rem, 4rem + 12vw, 14rem);
+
+  /* Motion timing — DESIGN_SYSTEM.md §25 (mirrors tailwind.config.ts,
+     kept here too so non-Tailwind consumers — GSAP timelines, R3F,
+     vanilla CSS — share the exact same values) */
+  --duration-instant: 100ms;
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --duration-cinematic: 700ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-editorial: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-luxury-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-luxury-in: cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* Elevation — warm-tinted, diffused shadows — DESIGN_SYSTEM.md §9
+     (light-theme values; [data-theme="dark"] overrides below) */
+  --shadow-elevation-1: 0 1px 2px rgba(28, 23, 18, 0.04),
+    0 1px 1px rgba(28, 23, 18, 0.03);
+  --shadow-elevation-2: 0 2px 8px rgba(28, 23, 18, 0.06),
+    0 1px 2px rgba(28, 23, 18, 0.04);
+  --shadow-elevation-3: 0 8px 24px rgba(28, 23, 18, 0.08),
+    0 2px 6px rgba(28, 23, 18, 0.05);
+  --shadow-elevation-4: 0 16px 48px rgba(28, 23, 18, 0.1),
+    0 4px 12px rgba(28, 23, 18, 0.06);
+  --shadow-elevation-5: 0 32px 80px rgba(28, 23, 18, 0.14),
+    0 8px 24px rgba(28, 23, 18, 0.08);
+  --shadow-elevation-glow: none;
+
+  /* Glassmorphism recipe — DESIGN_SYSTEM.md §10 */
+  --glass-bg-opacity: 0.62;
+  --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+  --glass-blur: blur(20px) saturate(140%);
+}
+
+/* Dark theme shadows read as depth against a dark surface only once tinted
+   darker and more opaque than the light-theme scale — DESIGN_SYSTEM.md §9 */
+[data-theme="dark"] {
+  --shadow-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.32),
+    0 1px 1px rgba(0, 0, 0, 0.24);
+  --shadow-elevation-2: 0 2px 8px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.28);
+  --shadow-elevation-3: 0 8px 24px rgba(0, 0, 0, 0.48),
+    0 2px 6px rgba(0, 0, 0, 0.32);
+  --shadow-elevation-4: 0 16px 48px rgba(0, 0, 0, 0.56),
+    0 4px 12px rgba(0, 0, 0, 0.36);
+  --shadow-elevation-5: 0 32px 80px rgba(0, 0, 0, 0.64),
+    0 8px 24px rgba(0, 0, 0, 0.4);
+  --glass-bg-opacity: 0.72;
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Tier 2 — Semantic tokens, resolved per data-brand × data-theme          */
+/* DESIGN_SYSTEM.md §4.5, §27, §28                                        */
+/* ---------------------------------------------------------------------- */
+
+/* Agency · Light (also the attribute-less fallback) */
+:root,
+[data-brand="agency"][data-theme="light"] {
+  --font-display: var(--font-fraunces);
+  --font-ui: var(--font-inter);
+
+  --color-bg-canvas: var(--neutral-25);
+  --color-bg-surface: var(--neutral-0);
+  --color-bg-surface-raised: var(--neutral-50);
+  --color-border-subtle: var(--neutral-150);
+  --color-border-strong: var(--neutral-400);
+  --color-text-primary: var(--neutral-900);
+  --color-text-secondary: var(--neutral-600);
+  --color-text-muted: var(--neutral-400);
+  --color-text-inverse: var(--neutral-25);
+
+  --color-accent: var(--copper-500);
+  --color-accent-hover: var(--copper-600);
+  --color-accent-subtle-bg: var(--copper-50);
+  --color-text-on-accent: var(--color-text-inverse);
+  /* copper-500 already clears ~4.53:1 against this theme's porcelain
+     canvas — unlike Lumora's gold, no separate darkened text variant is
+     needed; this just keeps the token present for any brand-agnostic
+     component that reaches for `text-accent-text`. */
+  --color-accent-text: var(--color-accent);
+
+  /* Primary button: ink-fill/paper-text in light — DESIGN_SYSTEM.md §11 */
+  --color-button-primary-bg: var(--color-text-primary);
+  --color-button-primary-fg: var(--color-text-inverse);
+
+  --radius-button: var(--radius-xs);
+  --radius-card: var(--radius-sm);
+}
+
+/* Agency · Dark */
+[data-brand="agency"][data-theme="dark"] {
+  --font-display: var(--font-fraunces);
+  --font-ui: var(--font-inter);
+
+  --color-bg-canvas: var(--neutral-950);
+  --color-bg-surface: var(--neutral-900);
+  --color-bg-surface-raised: var(--neutral-800);
+  --color-border-subtle: var(--neutral-800);
+  --color-border-strong: var(--neutral-600);
+  --color-text-primary: var(--neutral-25);
+  --color-text-secondary: var(--neutral-300);
+  --color-text-muted: var(--neutral-500);
+  --color-text-inverse: var(--neutral-900);
+
+  --color-accent: var(--copper-400);
+  --color-accent-hover: var(--copper-300);
+  --color-accent-subtle-bg: #2a1d14; /* copper-900, ~12% perceptual mix */
+  --color-text-on-accent: var(--color-text-inverse);
+  /* copper-400 already clears ~5.93:1 against this theme's near-black
+     canvas — same reasoning as the light block above. */
+  --color-accent-text: var(--color-accent);
+
+  /* Primary button: paper-fill/ink-text in dark — DESIGN_SYSTEM.md §11 */
+  --color-button-primary-bg: var(--color-text-primary);
+  --color-button-primary-fg: var(--color-text-inverse);
+
+  --radius-button: var(--radius-xs);
+  --radius-card: var(--radius-sm);
+}
+
+/* Lumora Skin · Light (brand default) */
+[data-brand="lumora"][data-theme="light"] {
+  --font-display: var(--font-cormorant-garamond);
+  --font-ui: var(--font-manrope);
+
+  --color-bg-canvas: #fbf7f1; /* porcelain-shifted neutral-25, DESIGN_SYSTEM.md §28 */
+  --color-bg-surface: var(--neutral-0);
+  --color-bg-surface-raised: var(--neutral-50);
+  --color-border-subtle: var(--neutral-150);
+  --color-border-strong: var(--neutral-400);
+  --color-text-primary: var(--neutral-900);
+  --color-text-secondary: var(--neutral-600);
+  --color-text-muted: var(--neutral-500);
+  --color-text-inverse: var(--neutral-25);
+
+  --color-accent: var(--gold-500);
+  --color-accent-hover: var(--gold-600);
+  --color-accent-subtle-bg: var(--gold-100);
+  --color-text-on-accent: var(
+    --neutral-900
+  ); /* gold is always light-toned — text stays ink in both themes */
+  /* #8a682e — a darkened gold-500 (same hue, ~36% lightness) that clears
+     WCAG's 4.5:1 text-contrast minimum against the porcelain canvas
+     (gold-500 itself only reaches ~2.25:1); gold-500 stays the fill/
+     border/icon accent, this is text-only. */
+  --color-accent-text: #8a682e;
+
+  /* Primary button: gold-fill/ink-text — DESIGN_SYSTEM.md §11 */
+  --color-button-primary-bg: var(--color-accent);
+  --color-button-primary-fg: var(--color-text-on-accent);
+
+  --radius-button: var(--radius-full);
+  --radius-card: var(--radius-lg);
+}
+
+/* Lumora Skin · Dark ("boutique at night") */
+[data-brand="lumora"][data-theme="dark"] {
+  --font-display: var(--font-cormorant-garamond);
+  --font-ui: var(--font-manrope);
+
+  --color-bg-canvas: #171b15; /* sage-based near-black, DESIGN_SYSTEM.md §27 */
+  --color-bg-surface: #1f241d;
+  --color-bg-surface-raised: #262c22;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+  --color-text-primary: var(--neutral-25);
+  --color-text-secondary: var(--neutral-300);
+  --color-text-muted: var(--neutral-400);
+  --color-text-inverse: var(--neutral-900);
+
+  --color-accent: var(--gold-300);
+  --color-accent-hover: var(--gold-500);
+  --color-accent-subtle-bg: #2e2712; /* gold-600, ~14% perceptual mix */
+  --color-text-on-accent: var(--neutral-900);
+  /* gold-300 already clears ~10.6:1 against the near-black dark canvas —
+     no separate darkened text variant needed here, unlike the light theme. */
+  --color-accent-text: var(--gold-300);
+
+  /* Primary button: gold-fill/ink-text — DESIGN_SYSTEM.md §11 */
+  --color-button-primary-bg: var(--color-accent);
+  --color-button-primary-fg: var(--color-text-on-accent);
+
+  --radius-button: var(--radius-full);
+  --radius-card: var(--radius-xl);
+  --shadow-elevation-glow: 0 0 40px rgba(201, 161, 92, 0.15);
+}
+
+/* Status colors are identical across brand/theme — surfaced as their own
+   Tier 2 tokens so components never reach for a Tier 1 --status-* value */
+:root {
+  --color-success: var(--status-success);
+  --color-warning: var(--status-warning);
+  --color-danger: var(--status-danger);
+  --color-info: var(--status-info);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Monospace — brand-independent (admin console always uses Agency type) */
+/* ---------------------------------------------------------------------- */
+:root {
+  --font-mono: var(--font-jetbrains-mono);
+}

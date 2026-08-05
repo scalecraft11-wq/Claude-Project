@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./tokens.css";
+
+@layer base {
+  * {
+    @apply border-hairline-subtle;
+  }
+
+  html {
+    scroll-behavior: auto; /* Lenis owns smooth scroll — see lib/animation/lenis.ts */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-canvas font-ui text-content-primary;
+    font-feature-settings:
+      "kern" 1,
+      "liga" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-text-inverse);
+  }
+
+  /* Visible, brand-consistent focus ring — DESIGN_SYSTEM.md §29. Never
+     removed without a replacement. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* Tabular figures for any animated/counted numeral — DESIGN_SYSTEM.md §14,
+     ANIMATION_BLUEPRINT.md §14/§21 — so digit-width never jitters layout. */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  /* Functional glass-surface recipe — DESIGN_SYSTEM.md §10. Applied only to
+     the approved overlay surfaces (sticky nav, modal scrims, viewer
+     controls, command palette) — never to static content cards. */
+  .glass-surface {
+    background-color: color-mix(
+      in srgb,
+      var(--color-bg-surface) calc(var(--glass-bg-opacity) * 100%),
+      transparent
+    );
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+  }
+
+  /* Caps body-copy measure at 68–75 characters — DESIGN_SYSTEM.md §3 */
+  .prose-measure {
+    max-width: 45rem;
+  }
+
+  /* Visually hidden but accessible — for skip-links, sr-only labels */
+  .sr-only-focusable {
+    @apply sr-only;
+  }
+  .sr-only-focusable:focus {
+    @apply not-sr-only;
+  }
+}
+
+/* Global, unconditional reduced-motion safety net. Individual libraries
+   (Lenis, GSAP, Framer Motion, R3F) each implement their own fallback per
+   ANIMATION_BLUEPRINT.md §28 — this is the last-resort backstop so no
+   CSS transition/animation ever runs for a user who has opted out, even if
+   a component forgets to check `usePrefersReducedMotion()`. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

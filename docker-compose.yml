@@ -1,0 +1,71 @@
+# Local/self-hosted stack: the app plus the two stateful services it talks
+# to (PostgreSQL, Redis). Not what Vercel deployments use — Vercel builds
+# straight from the repo and expects a managed Postgres/Redis elsewhere
+# (see docs/DEPLOYMENT.md) — this file is for Docker-based hosting instead.
+#
+# Quick start:
+#   cp .env.example .env
+#   docker compose up -d
+#   docker compose exec app npx prisma migrate deploy
+#   docker compose exec app npx tsx prisma/seed.ts   # optional demo data
+#
+# DATABASE_URL/REDIS_URL below are pre-wired to the compose service names
+# (not localhost) and don't need to be set in .env — every other var
+# (Stripe, NextAuth, Cloudinary, Resend, Sentry) still comes from .env, and
+# every one of them is optional (src/lib/env.ts) so the stack runs with an
+# empty .env too.
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://lumora:lumora@postgres:5432/lumora_digital
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: lumora
+      POSTGRES_PASSWORD: lumora
+      POSTGRES_DB: lumora_digital
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lumora -d lumora_digital"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
