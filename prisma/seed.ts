@@ -363,6 +363,20 @@ async function main() {
     });
     products.push(product);
 
+    const existingImages = await prisma.productImage.count({
+      where: { productId: product.id },
+    });
+    if (existingImages === 0) {
+      await prisma.productImage.create({
+        data: {
+          productId: product.id,
+          url: "/lumora/product-placeholder.svg",
+          altText: def.name,
+          position: 0,
+        },
+      });
+    }
+
     const existingMoves = await prisma.inventoryMovement.count({
       where: { productId: product.id },
     });
@@ -509,6 +523,89 @@ async function main() {
     if (!existing) await prisma.shippingMethod.create({ data: def });
   }
   console.log(`✓ ${shippingDefs.length} shipping methods`);
+
+  // ── Tax rates ─────────────────────────────────────────────────────
+  // A single country-wide fallback row (state: null) is enough for the
+  // demo storefront's flat-rate tax model (see lib/shop/tax.ts).
+  const existingTaxRate = await prisma.taxRate.findFirst({
+    where: { country: "US", state: null },
+  });
+  if (!existingTaxRate) {
+    await prisma.taxRate.create({
+      data: { country: "US", state: null, rateBps: 725 },
+    });
+  }
+  console.log("✓ 1 tax rate");
+
+  // ── Collections ───────────────────────────────────────────────────
+  const collectionDefs = [
+    {
+      name: "New Arrivals",
+      slug: "new-arrivals",
+      description: "The latest additions to the Renewal Collection.",
+      featured: true,
+      productNames: [
+        "Retinol Renewal Serum",
+        "Ceramide Repair Balm",
+        "Eye Renewal Cream",
+        "Antioxidant Toning Mist",
+      ],
+    },
+    {
+      name: "Bestsellers",
+      slug: "bestsellers",
+      description: "Our most-loved formulas, reordered again and again.",
+      featured: true,
+      productNames: [
+        "Niacinamide Pore Serum",
+        "Mineral Sunscreen SPF 50",
+        "Renewal Body Oil",
+        "Firming Body Cream",
+      ],
+    },
+    {
+      name: "Night Ritual",
+      slug: "night-ritual",
+      description: "Overnight treatments for skin renewal while you sleep.",
+      featured: false,
+      productNames: [
+        "Overnight Repair Mask",
+        "Retinol Renewal Serum",
+        "Ceramide Repair Balm",
+      ],
+    },
+  ];
+  for (const def of collectionDefs) {
+    const collection = await prisma.collection.upsert({
+      where: { slug: def.slug },
+      update: {},
+      create: {
+        name: def.name,
+        slug: def.slug,
+        description: def.description,
+        featured: def.featured,
+      },
+    });
+    for (const [position, name] of def.productNames.entries()) {
+      const product = products.find((p) => p.name === name);
+      if (!product) continue;
+      await prisma.collectionProduct.upsert({
+        where: {
+          collectionId_productId: {
+            collectionId: collection.id,
+            productId: product.id,
+          },
+        },
+        update: { position },
+        create: {
+          collectionId: collection.id,
+          productId: product.id,
+          position,
+        },
+      });
+    }
+  }
+  console.log(`✓ ${collectionDefs.length} collections`);
 
   // ── Orders (+ items + payments) ───────────────────────────────────
   const orderStatuses = [

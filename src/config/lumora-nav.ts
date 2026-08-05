@@ -3,6 +3,7 @@ import type { NavMenuItem } from "@/components/shared/mega-menu";
 
 export const lumoraNav: NavMenuItem[] = [
   { label: "Collections", href: "/lumora/collections" },
+  { label: "Search", href: "/lumora/search" },
   { label: "Wishlist", href: "/lumora/wishlist" },
 ];
 

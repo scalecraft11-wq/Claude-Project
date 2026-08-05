@@ -26,6 +26,12 @@ const nextConfig: NextConfig = {
         hostname: "res.cloudinary.com",
       },
     ],
+    // Only ever serves the hand-authored, static Lumora Skin placeholder
+    // under /public — never a user- or CMS-supplied SVG — so this doesn't
+    // reopen the stored-XSS risk `dangerouslyAllowSVG` normally carries.
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
   experimental: {
