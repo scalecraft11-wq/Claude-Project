@@ -8,11 +8,14 @@ import {
 } from "@/lib/admin/action-result";
 import { logActivity } from "@/lib/admin/activity-log";
 import { requireRole } from "@/lib/auth/guards";
+import { invalidateCache } from "@/lib/cache";
 import { prisma } from "@/lib/prisma";
 import {
   categorySchema,
   type CategoryInput,
 } from "@/lib/validation/admin/category";
+
+const CATEGORIES_CACHE_KEY = "shop:categories:tree";
 
 function toOptionalId(value: string | undefined): string | undefined {
   return value ? value : undefined;
@@ -53,6 +56,7 @@ export async function createCategoryAction(
 
     revalidatePath("/admin/categories");
     revalidatePath("/admin/products");
+    await invalidateCache(CATEGORIES_CACHE_KEY);
     return { success: true, message: "Category created." };
   } catch (error) {
     if (isUniqueConstraintError(error)) {
@@ -111,6 +115,7 @@ export async function updateCategoryAction(
 
     revalidatePath("/admin/categories");
     revalidatePath("/admin/products");
+    await invalidateCache(CATEGORIES_CACHE_KEY);
     return { success: true, message: "Category updated." };
   } catch (error) {
     if (isUniqueConstraintError(error)) {
@@ -144,6 +149,7 @@ export async function deleteCategoryAction(id: string): Promise<ActionResult> {
 
   revalidatePath("/admin/categories");
   revalidatePath("/admin/products");
+  await invalidateCache(CATEGORIES_CACHE_KEY);
   return {
     success: true,
     message:

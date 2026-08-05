@@ -1,3 +1,4 @@
+import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 /**
@@ -59,4 +60,15 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Wraps the build with Sentry's webpack plugin (source-map upload, release
+// tagging). Source-map upload itself only activates with SENTRY_AUTH_TOKEN
+// set — silent/no-op otherwise, same graceful-degradation posture as the
+// runtime SDK init in sentry.*.config.ts.
+export default withSentryConfig(nextConfig, {
+  silent: true,
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  webpack: { treeshake: { removeDebugLogging: true } },
+  sourcemaps: { disable: !process.env.SENTRY_AUTH_TOKEN },
+});

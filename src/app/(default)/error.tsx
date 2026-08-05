@@ -1,5 +1,6 @@
 "use client";
 
+import * as Sentry from "@sentry/nextjs";
 import { useEffect } from "react";
 
 import { ErrorFallback } from "@/components/error/error-fallback";
@@ -18,8 +19,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Wire-up point for Sentry (ARCHITECTURE.md §28) once installed.
-    console.error(error);
+    Sentry.captureException(error);
   }, [error]);
 
   return <ErrorFallback onRetry={reset} />;

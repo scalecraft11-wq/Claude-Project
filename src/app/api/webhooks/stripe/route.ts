@@ -2,13 +2,17 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 
-import { env } from "@/lib/env";
+import { clientEnv, env } from "@/lib/env";
+import { logger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
+import { sendOrderConfirmationEmail } from "@/lib/shop/email";
 import {
   generateInvoiceNumber,
   generateOrderNumber,
 } from "@/lib/shop/order-number";
 import { stripe } from "@/lib/stripe";
+
+const log = logger.child({ module: "stripe-webhook" });
 
 /**
  * Stripe webhook — the single source of truth for "did this order actually
@@ -19,7 +23,7 @@ import { stripe } from "@/lib/stripe";
  */
 export async function POST(request: Request) {
   if (!env.STRIPE_WEBHOOK_SECRET) {
-    console.error("[stripe webhook] STRIPE_WEBHOOK_SECRET is not set");
+    log.error("STRIPE_WEBHOOK_SECRET is not set");
     return NextResponse.json(
       { error: "Webhook not configured" },
       { status: 500 },
@@ -40,7 +44,7 @@ export async function POST(request: Request) {
       env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (error) {
-    console.error("[stripe webhook] signature verification failed", error);
+    log.error({ err: error }, "signature verification failed");
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
@@ -53,7 +57,7 @@ export async function POST(request: Request) {
         event.data.object as Stripe.Checkout.Session,
       );
     } catch (error) {
-      console.error("[stripe webhook] fulfillment failed", event.id, error);
+      log.error({ err: error, eventId: event.id }, "fulfillment failed");
       // 500 tells Stripe to retry — the idempotency check above makes a
       // retry safe even if fulfillment partially completed before erroring.
       return NextResponse.json(
@@ -75,10 +79,7 @@ async function fulfillCheckoutSession(session: Stripe.Checkout.Session) {
   const metadata = session.metadata ?? {};
   const cartId = metadata.cartId;
   if (!cartId) {
-    console.error(
-      "[stripe webhook] missing cartId in session metadata",
-      session.id,
-    );
+    log.error({ sessionId: session.id }, "missing cartId in session metadata");
     return;
   }
 
@@ -87,10 +88,7 @@ async function fulfillCheckoutSession(session: Stripe.Checkout.Session) {
     include: { items: { include: { product: true } } },
   });
   if (!cart || cart.items.length === 0) {
-    console.error(
-      "[stripe webhook] cart missing or empty at fulfillment time",
-      cartId,
-    );
+    log.error({ cartId }, "cart missing or empty at fulfillment time");
     return;
   }
 
@@ -112,15 +110,17 @@ async function fulfillCheckoutSession(session: Stripe.Checkout.Session) {
       ? session.payment_intent
       : session.payment_intent?.id;
 
-  await prisma.$transaction(async (tx) => {
+  const customerEmail =
+    session.customer_email ??
+    session.customer_details?.email ??
+    "unknown@example.com";
+
+  const orderId = await prisma.$transaction(async (tx) => {
     const order = await tx.order.create({
       data: {
         orderNumber,
         customerId: userId,
-        email:
-          session.customer_email ??
-          session.customer_details?.email ??
-          "unknown@example.com",
+        email: customerEmail,
         status: "PROCESSING",
         subtotalCents,
         taxCents,
@@ -200,6 +200,31 @@ async function fulfillCheckoutSession(session: Stripe.Checkout.Session) {
     }
 
     await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+
+    return order.id;
+  });
+
+  log.info(
+    { orderNumber, sessionId: session.id, totalCents },
+    "order fulfilled",
+  );
+
+  await sendOrderConfirmationEmail({
+    to: customerEmail,
+    orderNumber,
+    items: cart.items.map((item) => ({
+      name: item.product.name,
+      quantity: item.quantity,
+      priceCents: item.product.priceCents,
+    })),
+    subtotalCents,
+    shippingCents,
+    taxCents,
+    discountCents,
+    totalCents,
+    orderUrl: userId
+      ? `${clientEnv.NEXT_PUBLIC_APP_URL}/lumora/account/orders/${orderId}`
+      : `${clientEnv.NEXT_PUBLIC_APP_URL}/lumora/checkout/success?session_id=${session.id}`,
   });
 }
 

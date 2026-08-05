@@ -1,7 +1,7 @@
-import { Redis } from "ioredis";
+import type { Redis } from "ioredis";
 import { headers } from "next/headers";
 
-import { env } from "@/lib/env";
+import { getRedisClient } from "@/lib/redis";
 
 /**
  * Sliding-ish fixed-window rate limiter (ARCHITECTURE.md §16/§26: "Redis-
@@ -43,28 +43,6 @@ export const RATE_LIMITS = {
   couponApply: { limit: 15, windowMs: 10 * 60 * 1000 }, // 15 / 10 min
   cartMutate: { limit: 60, windowMs: 60 * 1000 }, // 60 / min
 } as const satisfies Record<string, RateLimitConfig>;
-
-let redisClient: Redis | null | undefined;
-
-function getRedisClient(): Redis | null {
-  if (redisClient !== undefined) return redisClient;
-
-  if (!env.REDIS_URL) {
-    redisClient = null;
-    return null;
-  }
-
-  redisClient = new Redis(env.REDIS_URL, {
-    maxRetriesPerRequest: 1,
-    lazyConnect: true,
-    reconnectOnError: () => false,
-  });
-  redisClient.on("error", (error) => {
-    console.error("[rate-limit] Redis connection error:", error.message);
-  });
-
-  return redisClient;
-}
 
 const memoryStore = new Map<string, { count: number; resetAt: number }>();
 

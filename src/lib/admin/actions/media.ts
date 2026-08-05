@@ -8,11 +8,19 @@ import {
 } from "@/lib/admin/action-result";
 import { logActivity } from "@/lib/admin/activity-log";
 import { requireRole } from "@/lib/auth/guards";
+import {
+  deleteImage,
+  isCloudinaryConfigured,
+  uploadImage,
+} from "@/lib/cloudinary";
+import { logger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import {
   mediaAssetSchema,
   type MediaAssetInput,
 } from "@/lib/validation/admin/media";
+
+const log = logger.child({ module: "media" });
 
 export async function uploadMediaAction(
   input: MediaAssetInput,
@@ -28,14 +36,38 @@ export async function uploadMediaAction(
   }
   const data = parsed.data;
 
+  // Cloudinary when configured (a real CDN URL, not a base64 blob sitting
+  // in Postgres); falls back to storing the data URI as-is otherwise —
+  // same graceful-degradation posture as every other optional integration.
+  let url = data.url;
+  let publicId: string | undefined;
+  let width = data.width;
+  let height = data.height;
+
+  if (isCloudinaryConfigured() && data.url.startsWith("data:")) {
+    try {
+      const uploaded = await uploadImage(data.url, data.folder);
+      url = uploaded.url;
+      publicId = uploaded.publicId;
+      width = uploaded.width ?? width;
+      height = uploaded.height ?? height;
+    } catch (error) {
+      log.error(
+        { err: error },
+        "Cloudinary upload failed, storing data URI instead",
+      );
+    }
+  }
+
   const asset = await prisma.mediaAsset.create({
     data: {
       filename: data.filename,
-      url: data.url,
+      url,
+      publicId,
       mimeType: data.mimeType,
       sizeBytes: data.sizeBytes,
-      width: data.width,
-      height: data.height,
+      width,
+      height,
       folder: data.folder,
       uploadedById: session.user!.id,
     },
@@ -60,6 +92,10 @@ export async function deleteMediaAction(id: string): Promise<ActionResult> {
   const existing = await prisma.mediaAsset.findUnique({ where: { id } });
   if (!existing) {
     return { success: false, message: "Asset not found." };
+  }
+
+  if (existing.publicId) {
+    await deleteImage(existing.publicId);
   }
 
   await prisma.mediaAsset.delete({ where: { id } });

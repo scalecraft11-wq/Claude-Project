@@ -630,14 +630,19 @@ model Review {
 }
 
 model MediaAsset {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   filename  String
   url       String
+  /// Cloudinary public ID — only set when the asset actually lives on
+  /// Cloudinary (see lib/cloudinary.ts); null for the base64-data-URI
+  /// fallback used when Cloudinary isn't configured, since there's
+  /// nothing to delete from a remote store in that case.
+  publicId  String?
   mimeType  String
   sizeBytes Int
   width     Int?
   height    Int?
-  folder    String @default("uploads")
+  folder    String  @default("uploads")
 
   uploadedById String?
   uploadedBy   User?   @relation(fields: [uploadedById], references: [id], onDelete: SetNull)

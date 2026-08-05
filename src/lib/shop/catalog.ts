@@ -1,5 +1,10 @@
+import { getOrSetCache } from "@/lib/cache";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "../../../generated/prisma/client";
+
+const CATEGORIES_CACHE_KEY = "shop:categories:tree";
+const COLLECTIONS_CACHE_KEY = "shop:collections:list";
+const CATALOG_CACHE_TTL_SECONDS = 60;
 
 /**
  * Read-only storefront catalog queries — every list/detail query a public
@@ -159,23 +164,34 @@ export async function getProductBySlug(slug: string) {
   });
 }
 
+/** Cached (60s) — a low-cardinality tree read on nearly every storefront
+ * page, changed only by rare admin edits (see the cache invalidation in
+ * lib/admin/actions/categories.ts). */
 export async function listCategories() {
-  return prisma.category.findMany({
-    where: { parentId: null },
-    include: { children: { orderBy: { name: "asc" } } },
-    orderBy: { name: "asc" },
-  });
+  return getOrSetCache(CATEGORIES_CACHE_KEY, CATALOG_CACHE_TTL_SECONDS, () =>
+    prisma.category.findMany({
+      where: { parentId: null },
+      include: { children: { orderBy: { name: "asc" } } },
+      orderBy: { name: "asc" },
+    }),
+  );
 }
 
 export async function getCategoryBySlug(slug: string) {
   return prisma.category.findUnique({ where: { slug } });
 }
 
+/** Cached (60s) — same rationale as `listCategories`. */
 export async function listCollections(featuredOnly = false) {
-  return prisma.collection.findMany({
-    where: featuredOnly ? { featured: true } : undefined,
-    orderBy: { name: "asc" },
-  });
+  return getOrSetCache(
+    `${COLLECTIONS_CACHE_KEY}:${featuredOnly}`,
+    CATALOG_CACHE_TTL_SECONDS,
+    () =>
+      prisma.collection.findMany({
+        where: featuredOnly ? { featured: true } : undefined,
+        orderBy: { name: "asc" },
+      }),
+  );
 }
 
 export async function getCollectionBySlug(slug: string) {

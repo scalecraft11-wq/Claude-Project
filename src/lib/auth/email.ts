@@ -1,6 +1,4 @@
-import { Resend } from "resend";
-
-import { env } from "@/lib/env";
+import { FROM_EMAIL, getResendClient } from "@/lib/resend";
 
 /**
  * Transactional auth email sending. Resend-backed when `RESEND_API_KEY`
@@ -8,17 +6,6 @@ import { env } from "@/lib/env";
  * development and CI never require a real email provider to exercise the
  * verification/reset/magic-link flows end to end.
  */
-
-let resendClient: Resend | null | undefined;
-
-function getResendClient(): Resend | null {
-  if (resendClient !== undefined) return resendClient;
-  resendClient = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
-  return resendClient;
-}
-
-const FROM_EMAIL =
-  env.RESEND_FROM_EMAIL ?? "Lumora Digital <onboarding@resend.dev>";
 
 interface SendEmailInput {
   to: string;

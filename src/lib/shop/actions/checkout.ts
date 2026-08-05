@@ -5,6 +5,7 @@ import type Stripe from "stripe";
 import { getClientIp, rateLimit, RATE_LIMITS } from "@/lib/auth/rate-limit";
 import { getCurrentSession } from "@/lib/auth/guards";
 import { clientEnv } from "@/lib/env";
+import { logger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import {
   fieldErrorsFromZod,
@@ -190,7 +191,7 @@ export async function createCheckoutSessionAction(
       checkoutUrl: checkoutSession.url,
     };
   } catch (error) {
-    console.error("[checkout] Stripe error:", error);
+    logger.child({ module: "checkout" }).error({ err: error }, "Stripe error");
     return {
       success: false,
       message:
