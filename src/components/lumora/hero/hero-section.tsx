@@ -18,7 +18,6 @@ import { useBreakpoint } from "@/hooks/use-media-query";
 import { useDeviceTier } from "@/hooks/use-device-tier";
 import { useMounted } from "@/hooks/use-mounted";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
-import { ScrollTrigger, registerGsap } from "@/lib/animation/gsap";
 import { cn } from "@/lib/utils";
 
 const HeroScene = dynamic(
@@ -65,6 +64,17 @@ export function HeroSection() {
   const isDesktop = useBreakpoint("lg");
   const [mobileExploreEnabled, setMobileExploreEnabled] = React.useState(false);
 
+  // WebGL context creation + shader compilation is expensive enough that
+  // mounting the canvas in the same paint cycle as the hero text's entrance
+  // animation starves it of main-thread time (measured: push this straight
+  // through and the description paragraph's opacity transition — the
+  // page's LCP element — doesn't resolve for several seconds under CPU
+  // throttling). Arming the canvas one frame after first paint costs one
+  // imperceptible frame of the static fallback poster in exchange for the
+  // headline/CTA text painting on schedule instead of fighting the GPU
+  // pipeline for it.
+  const [canvasArmed, setCanvasArmed] = React.useState(false);
+
   // Lenis is mounted once at the page/layout root (see
   // components/providers/lenis-provider.tsx), not here — a section must
   // never create its own competing scroll-smoothing instance
@@ -77,26 +87,50 @@ export function HeroSection() {
     mounted && deviceTier !== "tier3" && !prefersReducedMotion;
   const shouldPin = canRenderScene && isDesktop;
   const shouldRenderCanvas =
-    canRenderScene && (isDesktop || mobileExploreEnabled);
+    canRenderScene && (isDesktop || mobileExploreEnabled) && canvasArmed;
 
+  React.useEffect(() => {
+    if (!canRenderScene) return;
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setCanvasArmed(true));
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [canRenderScene]);
+
+  // GSAP + ScrollTrigger are only ever needed for this desktop pin effect —
+  // mobile visitors (the majority under Lighthouse's mobile emulation and
+  // in practice) never run it, so a static top-level import would ship and
+  // parse ~20KB of animation code that most sessions never execute. Loading
+  // it dynamically, gated on `shouldPin`, keeps that cost off the mobile
+  // critical path entirely.
   React.useEffect(() => {
     if (!shouldPin || !sectionRef.current) return;
 
-    const gsap = registerGsap();
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "+=100%",
-        pin: true,
-        scrub: 1,
-        onUpdate: (self) => {
-          scrollProgressRef.current.value = self.progress;
-        },
-      });
-    }, sectionRef);
+    let cancelled = false;
+    let revert: (() => void) | undefined;
 
-    return () => ctx.revert();
+    import("@/lib/animation/gsap").then(({ registerGsap, ScrollTrigger }) => {
+      if (cancelled || !sectionRef.current) return;
+      const gsap = registerGsap();
+      const ctx = gsap.context(() => {
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=100%",
+          pin: true,
+          scrub: 1,
+          onUpdate: (self) => {
+            scrollProgressRef.current.value = self.progress;
+          },
+        });
+      }, sectionRef);
+      revert = () => ctx.revert();
+    });
+
+    return () => {
+      cancelled = true;
+      revert?.();
+    };
   }, [shouldPin]);
 
   return (

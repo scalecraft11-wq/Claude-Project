@@ -1,8 +1,3 @@
-"use client";
-
-import { motion } from "motion/react";
-
-import { durationsMs, easingCurves } from "@/lib/animation/tokens";
 import { cn } from "@/lib/utils";
 
 export interface HeroTypographyProps {
@@ -14,14 +9,21 @@ export interface HeroTypographyProps {
   className?: string;
 }
 
-const toSeconds = (ms: number) => ms / 1000;
-
 /**
  * Hero headline entrance — ANIMATION_BLUEPRINT.md §14/§19: each line
  * reveals via a mask (clipped by the `overflow-hidden` wrapper, not a
  * fade) and staggers in ~80ms apart. Body copy gets the single
  * group-fade-up used everywhere else (§20) — kinetic per-line reveals are
  * reserved for headline-scale type only.
+ *
+ * Pure CSS (`tailwindcss-animate`'s `animate-in` utilities), not Framer
+ * Motion — this is the hero's above-the-fold text, one of which is
+ * typically the page's LCP element. A JS/rAF-driven entrance would gate
+ * that element's paint on React hydration finishing, which under
+ * throttled CPUs competes with everything else hydrating at once and
+ * measurably delays LCP; a native CSS `@keyframes` animation paints on
+ * schedule regardless of main-thread load, since the browser drives it
+ * off the parsed stylesheet alone.
  */
 export function HeroTypography({
   eyebrow,
@@ -32,51 +34,31 @@ export function HeroTypography({
   return (
     <div className={cn("grid gap-6", className)}>
       {eyebrow && (
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: toSeconds(durationsMs.slow),
-            ease: easingCurves.luxuryOut,
-          }}
-          className="text-overline text-content-muted"
-        >
+        <p className="text-overline text-content-muted duration-slow ease-luxury-out animate-in fade-in slide-in-from-bottom-2 fill-mode-both">
           {eyebrow}
-        </motion.p>
+        </p>
       )}
 
       <h1 className="font-display text-display-01 text-content-primary">
         {lines.map((line, index) => (
           <span key={line} className="block overflow-hidden">
-            <motion.span
-              initial={{ y: "110%" }}
-              animate={{ y: "0%" }}
-              transition={{
-                duration: toSeconds(durationsMs.cinematic),
-                ease: easingCurves.luxuryOut,
-                delay: index * 0.08,
-              }}
-              className="block"
+            <span
+              className="block duration-cinematic ease-luxury-out animate-in slide-in-from-bottom-[110%] fill-mode-both"
+              style={{ animationDelay: `${index * 80}ms` }}
             >
               {line}
-            </motion.span>
+            </span>
           </span>
         ))}
       </h1>
 
       {description && (
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: toSeconds(durationsMs.slow),
-            ease: easingCurves.luxuryOut,
-            delay: lines.length * 0.08 + 0.1,
-          }}
-          className="max-w-measure text-body-lg text-content-secondary"
+        <p
+          className="max-w-measure text-body-lg text-content-secondary duration-slow ease-luxury-out animate-in fade-in slide-in-from-bottom-4 fill-mode-both"
+          style={{ animationDelay: `${lines.length * 80 + 100}ms` }}
         >
           {description}
-        </motion.p>
+        </p>
       )}
     </div>
   );

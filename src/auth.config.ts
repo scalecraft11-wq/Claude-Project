@@ -19,6 +19,13 @@ import type { NextAuthConfig } from "next-auth";
  * §17): middleware alone is never trusted as the sole security boundary.
  */
 export const authConfig = {
+  // Vercel (and most reverse-proxy platforms) already validate the
+  // incoming Host header at the edge before a request reaches this app,
+  // and preview deployments get a fresh URL per-deploy that can't be
+  // pre-baked into a static `NEXTAUTH_URL` — without this, NextAuth
+  // rejects those requests as `UntrustedHost` and every session/auth
+  // call 500s. See https://errors.authjs.dev#untrustedhost.
+  trustHost: true,
   pages: {
     signIn: "/login",
     verifyRequest: "/verify-request",

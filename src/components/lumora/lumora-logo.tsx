@@ -18,7 +18,7 @@ export function LumoraLogo({ className }: LumoraLogoProps) {
         className,
       )}
     >
-      Lumora <span className="text-accent">Skin</span>
+      Lumora <span className="text-accent-text">Skin</span>
     </Link>
   );
 }

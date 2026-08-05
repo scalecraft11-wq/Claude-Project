@@ -51,6 +51,12 @@ const config: Config = {
           hover: "var(--color-accent-hover)",
           subtle: "var(--color-accent-subtle-bg)",
           foreground: "var(--color-text-on-accent)",
+          // A darker gold reserved for gold *text* sitting directly on the
+          // canvas (e.g. the "Skin" wordmark) — `--color-accent` itself
+          // reads fine as a fill/border/icon color but falls short of
+          // WCAG's 4.5:1 text contrast minimum against the light theme's
+          // porcelain canvas.
+          text: "var(--color-accent-text)",
         },
         button: {
           primary: {
