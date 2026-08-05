@@ -111,5 +111,12 @@
     "*.{js,jsx,mjs,cjs,json,css}": [
       "prettier --write"
     ]
-  }
+  },
+  "browserslist": [
+    "chrome >= 109",
+    "edge >= 109",
+    "firefox >= 102",
+    "safari >= 15.4",
+    "ios >= 15.4"
+  ]
 }
