@@ -11,6 +11,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
+  // Traces the minimal server + dependency graph into `.next/standalone`
+  // (a self-contained `server.js` plus only the node_modules it actually
+  // needs) — what the Dockerfile copies into the runtime image instead of
+  // the full node_modules tree. Harmless on Vercel, which uses its own
+  // build output pipeline regardless of this setting.
+  output: "standalone",
+
   // Deliberately off: typed routes validate literal `href` strings written
   // directly in JSX, but this codebase's whole component library is built
   // around reusable components that accept `href` as a runtime string prop

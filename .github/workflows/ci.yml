@@ -1,0 +1,56 @@
+name: CI
+
+# Runs on every push and PR — lint, typecheck, schema validation, and a
+# full production build all have to pass before merging. This does not
+# deploy anything: Vercel's own GitHub App handles Preview/Production
+# deployments on this repo independently of this workflow (see
+# docs/DEPLOYMENT.md) — running a competing `vercel deploy` step here
+# would just double-deploy every push.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Validate Prisma schema
+        run: npx prisma validate
+        env:
+          # `prisma validate`/`generate` only need a syntactically valid
+          # connection string, never an actually-reachable database — no
+          # real Postgres is provisioned in this job.
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+
+      - name: Production build
+        run: npm run build
+        env:
+          # Every env var here is optional at the code level
+          # (src/lib/env.ts) — the build succeeds without any of them.
+          # This job deliberately runs with none set, so a change that
+          # accidentally introduces a hard runtime dependency on a
+          # specific integration being configured fails here, not in
+          # production.
+          NEXT_TELEMETRY_DISABLED: "1"
