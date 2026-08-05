@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { getCurrentSession } from "@/lib/auth/guards";
 import { prisma } from "@/lib/prisma";
+import { sanitizePlainText } from "@/lib/sanitize";
 import {
   fieldErrorsFromZod,
   type ActionResult,
@@ -53,8 +54,8 @@ export async function submitReviewAction(
       customerId: session.user.id,
       authorName: session.user.name ?? session.user.email ?? "Customer",
       rating: parsed.data.rating,
-      title: parsed.data.title,
-      body: parsed.data.body,
+      title: sanitizePlainText(parsed.data.title),
+      body: sanitizePlainText(parsed.data.body),
     },
   });
 

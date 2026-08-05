@@ -44,6 +44,26 @@ const nextConfig: NextConfig = {
   },
 
   async headers() {
+    // Not a nonce-based CSP (would need per-request middleware wiring to
+    // thread a nonce through every inline script Next.js itself emits) —
+    // 'unsafe-inline'/'unsafe-eval' stay open on script-src for that
+    // reason, but every other directive is real: no plugin/object embeds,
+    // no framing by another origin, and image/connect sources scoped to
+    // exactly the external hosts this app actually talks to.
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https://res.cloudinary.com",
+      "font-src 'self' data:",
+      "connect-src 'self' https://api.stripe.com https://*.sentry.io",
+      "frame-src https://checkout.stripe.com https://js.stripe.com",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+    ].join("; ");
+
     return [
       {
         source: "/:path*",
@@ -54,6 +74,16 @@ const nextConfig: NextConfig = {
             key: "Referrer-Policy",
             value: "strict-origin-when-cross-origin",
           },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "Permissions-Policy",
+            value:
+              "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          },
+          { key: "Content-Security-Policy", value: csp },
         ],
       },
     ];

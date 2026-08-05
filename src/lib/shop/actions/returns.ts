@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireAuth } from "@/lib/auth/guards";
 import { prisma } from "@/lib/prisma";
+import { sanitizePlainText } from "@/lib/sanitize";
 import {
   fieldErrorsFromZod,
   type ActionResult,
@@ -73,7 +74,7 @@ export async function submitReturnRequestAction(
     data: {
       orderId,
       customerId: session.user!.id,
-      reason: parsed.data.reason,
+      reason: sanitizePlainText(parsed.data.reason),
       items: {
         create: parsed.data.items.map((item) => ({
           orderItemId: item.orderItemId,
