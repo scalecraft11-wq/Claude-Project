@@ -39,6 +39,9 @@ export const RATE_LIMITS = {
   forgotPassword: { limit: 3, windowMs: 60 * 60 * 1000 }, // 3 / hour
   resendVerification: { limit: 3, windowMs: 60 * 60 * 1000 }, // 3 / hour
   magicLink: { limit: 3, windowMs: 60 * 60 * 1000 }, // 3 / hour
+  checkoutCreate: { limit: 10, windowMs: 10 * 60 * 1000 }, // 10 / 10 min
+  couponApply: { limit: 15, windowMs: 10 * 60 * 1000 }, // 15 / 10 min
+  cartMutate: { limit: 60, windowMs: 60 * 1000 }, // 60 / min
 } as const satisfies Record<string, RateLimitConfig>;
 
 let redisClient: Redis | null | undefined;
