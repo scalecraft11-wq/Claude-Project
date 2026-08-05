@@ -8,7 +8,7 @@ import { Container } from "@/components/layouts";
 import { requireAuth } from "@/lib/auth/guards";
 
 /**
- * Shell for every signed-in app route (`/dashboard`, `/admin`).
+ * Shell for every signed-in app route (`/dashboard`).
  * `requireAuth()` here is the Server Component layer of the same
  * defense-in-depth RBAC middleware.ts starts (ARCHITECTURE.md §17) — this
  * layout renders for every page beneath it, so a route added later under

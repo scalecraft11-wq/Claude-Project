@@ -30,6 +30,10 @@ const nextConfig: NextConfig = {
 
   experimental: {
     optimizePackageImports: ["lucide-react", "@react-three/drei", "motion"],
+    // The admin Media Library uploads images as base64 data URIs through a
+    // Server Action (no external object storage configured) — the default
+    // 1mb body limit is too small for a real photo, so it's raised here.
+    serverActions: { bodySizeLimit: "4mb" },
   },
 
   async headers() {
