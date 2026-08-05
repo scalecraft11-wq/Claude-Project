@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from "next";
 import { AppProviders } from "@/components/providers/app-providers";
 import { ErrorBoundary } from "@/components/error/error-boundary";
 
-import { DEFAULT_BRAND } from "@/contexts/brand-context";
 import { fontVariables } from "@/lib/fonts";
 import { buildMetadata } from "@/lib/seo/metadata";
 
@@ -21,20 +20,16 @@ export const viewport: Viewport = {
 };
 
 /**
- * The single root layout Next.js requires. `data-brand` defaults to
- * `"agency"` for now — there is only one experience mounted at this stage
- * (ARCHITECTURE.md §11 route groups don't exist yet: "no homepage yet").
- *
- * Once `(marketing)` and `(lumora)` route groups are built, revisit this:
- * per ARCHITECTURE.md §11, Next.js allows each top-level route group to
- * define its *own* root layout (own `<html>`/`<body>`) when there's no
- * shared layout above them — that's the zero-FOUC way to give Lumora Skin
- * a genuinely independent brand root instead of a runtime-branched
- * `data-brand` on one shared `<html>`. Deferred deliberately: building
- * that now would mean building the route groups themselves, which is out
- * of scope for this pass ("do not build pages").
+ * Root layout for the agency experience — marketing, auth, the customer
+ * dashboard, and the admin panel. `(lumora)` is a sibling route group with
+ * its own independent root layout (own `<html>`/`<body>`, own brand/theme
+ * defaults) rather than a `data-brand` switch on this one: Next.js
+ * supports multiple root layouts precisely so two visually distinct
+ * brand experiences can share one codebase without either one leaking
+ * into the other's providers, fonts, or default theme (see that layout's
+ * own docstring, and ARCHITECTURE.md's route-group rationale).
  */
-export default function RootLayout({
+export default function DefaultRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -42,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-brand={DEFAULT_BRAND}
+      data-brand="agency"
       className={fontVariables}
       suppressHydrationWarning
     >
@@ -53,7 +48,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <AppProviders brand={DEFAULT_BRAND}>
+        <AppProviders brand="agency">
           <ErrorBoundary>
             <main id="main-content">{children}</main>
           </ErrorBoundary>

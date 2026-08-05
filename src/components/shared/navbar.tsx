@@ -18,6 +18,9 @@ export interface NavbarProps {
   logo: React.ReactNode;
   items: NavMenuItem[];
   cta?: { label: string; href: string };
+  /** Extra content rendered between the auth link and the CTA button —
+   * e.g. Lumora Skin's bag/wishlist indicators. Unused by the agency nav. */
+  rightExtra?: React.ReactNode;
   className?: string;
 }
 
@@ -33,7 +36,13 @@ const SCROLL_THRESHOLD = 80;
  * - Lumora Skin: persistent solid surface with a hairline border from the
  *   start — commerce nav must always stay reachable for cart access.
  */
-export function Navbar({ logo, items, cta, className }: NavbarProps) {
+export function Navbar({
+  logo,
+  items,
+  cta,
+  rightExtra,
+  className,
+}: NavbarProps) {
   const brand = useBrand();
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isHidden, setIsHidden] = React.useState(false);
@@ -86,6 +95,7 @@ export function Navbar({ logo, items, cta, className }: NavbarProps) {
 
           <div className="flex items-center gap-3">
             <NavAuthLink className="hidden md:inline-block" />
+            {rightExtra}
             {cta && (
               <Button
                 asChild

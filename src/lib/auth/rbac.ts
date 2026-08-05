@@ -44,6 +44,7 @@ export const PROTECTED_ROUTES: ProtectedRoute[] = [
     minRole: "ADMIN",
   },
   { pattern: /^\/dashboard(\/.*)?$/, minRole: "CUSTOMER" },
+  { pattern: /^\/lumora\/account(\/.*)?$/, minRole: "CUSTOMER" },
 ];
 
 export function getRequiredRole(pathname: string): Role | null {

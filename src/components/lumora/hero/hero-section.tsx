@@ -2,6 +2,7 @@
 
 import { Sparkles as SparklesIcon, Droplet } from "lucide-react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import * as React from "react";
 
 import { ClientLogos } from "@/components/lumora/hero/client-logos";
@@ -216,13 +217,13 @@ export function HeroSection() {
         <div className="grid gap-10">
           <div className="flex flex-wrap items-center gap-4">
             <MagneticButton>
-              <Button size="lg" variant="primary" data-cursor="view">
-                Shop the Collection
+              <Button size="lg" variant="primary" data-cursor="view" asChild>
+                <Link href="/lumora/collections">Shop the Collection</Link>
               </Button>
             </MagneticButton>
             <MagneticButton>
-              <Button size="lg" variant="secondary">
-                Watch the Film
+              <Button size="lg" variant="secondary" asChild>
+                <Link href="/case-studies">Watch the Film</Link>
               </Button>
             </MagneticButton>
           </div>
