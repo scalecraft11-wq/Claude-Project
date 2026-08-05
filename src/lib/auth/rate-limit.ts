@@ -42,6 +42,7 @@ export const RATE_LIMITS = {
   checkoutCreate: { limit: 10, windowMs: 10 * 60 * 1000 }, // 10 / 10 min
   couponApply: { limit: 15, windowMs: 10 * 60 * 1000 }, // 15 / 10 min
   cartMutate: { limit: 60, windowMs: 60 * 1000 }, // 60 / min
+  apiRead: { limit: 120, windowMs: 60 * 1000 }, // 120 / min — REST API v1 GETs
 } as const satisfies Record<string, RateLimitConfig>;
 
 const memoryStore = new Map<string, { count: number; resetAt: number }>();
