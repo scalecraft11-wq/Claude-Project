@@ -7,7 +7,7 @@ import type { Product } from "@/lib/types";
 import { SneakerArt } from "@/components/ui/SneakerArt";
 import { RatingStars } from "@/components/ui/RatingStars";
 import { Badge } from "@/components/ui/Badge";
-import { formatPrice, cn } from "@/lib/utils";
+import { formatPrice, cn, getSilhouette } from "@/lib/utils";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
 
@@ -52,7 +52,7 @@ export function ProductCard({
           </button>
 
           <div className="relative aspect-[10/9] w-full overflow-hidden bg-gradient-to-b from-bg-elevated-2 to-bg-elevated p-5 transition-transform duration-500 ease-out group-hover:scale-[1.05]">
-            <SneakerArt art={product.art} className="drop-shadow-xl" />
+            <SneakerArt art={product.art} silhouette={getSilhouette(product.category)} className="drop-shadow-xl" />
           </div>
         </div>
 

@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Search, X } from "lucide-react";
 import { products } from "@/lib/data/products";
 import { SneakerArt } from "@/components/ui/SneakerArt";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getSilhouette } from "@/lib/utils";
 
 export function SearchOverlay({
   open,
@@ -86,7 +86,7 @@ export function SearchOverlay({
                     className="flex items-center gap-4 rounded-2xl p-3 transition-colors hover:bg-black/[0.04]"
                   >
                     <div className="h-14 w-14 shrink-0 rounded-xl bg-bg-elevated-2 p-2">
-                      <SneakerArt art={product.art} glow={false} />
+                      <SneakerArt art={product.art} silhouette={getSilhouette(product.category)} glow={false} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-medium text-fg">{product.name}</p>

@@ -67,7 +67,7 @@ export default function AboutPage() {
     <div>
       <section className="relative overflow-hidden py-20 lg:py-28">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-brand-2/10 blur-[140px]" />
+          <div className="absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-brand/25 blur-[140px]" />
         </div>
         <Container className="relative">
           <Reveal className="mx-auto max-w-3xl text-center">
@@ -127,10 +127,10 @@ export default function AboutPage() {
 
           <Reveal delay={0.1} className="order-1 lg:order-2">
             <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-[2rem] border border-border-subtle bg-gradient-to-br from-bg-elevated-2 to-bg-elevated p-14">
-              <div className="absolute -left-10 -top-10 h-56 w-56 rounded-full bg-brand/15 blur-[100px]" />
-              <div className="absolute -bottom-10 -right-10 h-56 w-56 rounded-full bg-brand-2/15 blur-[100px]" />
+              <div className="absolute -left-10 -top-10 h-56 w-56 rounded-full bg-brand/30 blur-[100px]" />
+              <div className="absolute -bottom-10 -right-10 h-56 w-56 rounded-full bg-brand-3/25 blur-[100px]" />
               <SneakerArt
-                art={{ upper: "#181818", sole: "#c2a878", accent: "#c2a878", laces: "#f4f4f0" }}
+                art={{ upper: "#181818", sole: "#cb9328", accent: "#d1373c", laces: "#f4f4f0" }}
                 className="relative"
               />
             </div>
@@ -150,7 +150,7 @@ export default function AboutPage() {
             {values.map((value, i) => (
               <Reveal key={value.title} delay={i * 0.08}>
                 <div className="flex h-full flex-col gap-4 rounded-3xl border border-border-subtle bg-surface p-7 transition-colors hover:border-border-strong">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand/10 text-brand">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand/18 text-brand-2">
                     <value.icon size={20} />
                   </div>
                   <h3 className="font-display text-lg font-bold tracking-tight text-fg">
@@ -190,7 +190,7 @@ export default function AboutPage() {
       <section className="pb-20 lg:pb-28">
         <Container>
           <Reveal className="relative overflow-hidden rounded-[2rem] border border-border-subtle bg-gradient-to-br from-bg-elevated-2 via-surface to-bg-elevated-2 px-8 py-16 text-center sm:px-16">
-            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand/15 blur-[120px]" />
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand/32 blur-[120px]" />
             <h2 className="relative font-display text-4xl font-bold leading-[1.05] tracking-tight text-fg sm:text-5xl">
               Ready to move beyond limits?
             </h2>

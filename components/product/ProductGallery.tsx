@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Product } from "@/lib/types";
 import { SneakerArt } from "@/components/ui/SneakerArt";
-import { cn } from "@/lib/utils";
+import { cn, getSilhouette } from "@/lib/utils";
 
 const variants = [
   { label: "Side", transform: "" },
@@ -15,6 +15,7 @@ const variants = [
 
 export function ProductGallery({ product }: { product: Product }) {
   const [active, setActive] = useState(0);
+  const silhouette = getSilhouette(product.category);
 
   return (
     <div className="flex flex-col gap-4">
@@ -29,7 +30,7 @@ export function ProductGallery({ product }: { product: Product }) {
             className="flex h-full w-full items-center justify-center p-14"
             style={{ transform: variants[active].transform }}
           >
-            <SneakerArt art={product.art} />
+            <SneakerArt art={product.art} silhouette={silhouette} />
           </motion.div>
         </AnimatePresence>
 
@@ -56,7 +57,7 @@ export function ProductGallery({ product }: { product: Product }) {
             )}
           >
             <div style={{ transform: v.transform }} className="h-full w-full">
-              <SneakerArt art={product.art} glow={false} />
+              <SneakerArt art={product.art} silhouette={silhouette} glow={false} />
             </div>
           </button>
         ))}

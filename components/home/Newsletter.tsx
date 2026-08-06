@@ -17,8 +17,8 @@ export function Newsletter() {
 
   return (
     <div className="relative overflow-hidden rounded-[2rem] border border-border-subtle bg-gradient-to-br from-bg-elevated-2 via-surface to-bg-elevated-2 px-8 py-12 sm:px-14 sm:py-16">
-      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand/20 blur-[100px]" />
-      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-brand-2/20 blur-[100px]" />
+      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand/35 blur-[100px]" />
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-brand-3/18 blur-[100px]" />
 
       <div className="relative flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="max-w-md">

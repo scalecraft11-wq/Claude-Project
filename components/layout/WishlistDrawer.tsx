@@ -5,7 +5,7 @@ import { Heart, ShoppingBag, Trash2, X } from "lucide-react";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
 import { products } from "@/lib/data/products";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getSilhouette } from "@/lib/utils";
 import { SneakerArt } from "@/components/ui/SneakerArt";
 import { ButtonLink } from "@/components/ui/Button";
 
@@ -64,7 +64,7 @@ export function WishlistDrawer() {
                   {wishlistedProducts.map((product) => (
                     <div key={product.id} className="flex gap-4">
                       <div className="h-24 w-24 shrink-0 rounded-2xl bg-bg-elevated-2 p-3">
-                        <SneakerArt art={product.art} glow={false} />
+                        <SneakerArt art={product.art} silhouette={getSilhouette(product.category)} glow={false} />
                       </div>
                       <div className="flex flex-1 flex-col justify-between">
                         <div className="flex items-start justify-between gap-2">

@@ -53,7 +53,7 @@ export default function ContactPage() {
           {info.map((item, i) => (
             <Reveal key={item.title} delay={i * 0.06}>
               <div className="flex h-full flex-col gap-3 rounded-3xl border border-border-subtle bg-surface p-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand/10 text-brand">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand/18 text-brand-2">
                   <item.icon size={17} />
                 </div>
                 <h3 className="font-display text-sm font-bold uppercase tracking-wide">
@@ -89,9 +89,9 @@ export default function ContactPage() {
                   backgroundSize: "34px 34px",
                 }}
               />
-              <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/15 blur-[80px]" />
+              <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/30 blur-[80px]" />
               <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-[0_10px_28px_-8px_rgba(194,168,120,0.55)]">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-[0_10px_28px_-8px_rgba(203,147,40,0.6)]">
                   <MapPin size={22} />
                 </span>
                 <div className="rounded-xl border border-border-subtle bg-white/90 px-4 py-2 text-center shadow-sm backdrop-blur">

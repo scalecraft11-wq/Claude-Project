@@ -22,8 +22,8 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden bg-ink text-ink-fg">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-[-10%] h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-brand/15 blur-[140px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] h-[400px] w-[500px] rounded-full bg-brand-2/12 blur-[120px]" />
+        <div className="absolute left-1/2 top-[-10%] h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-brand/30 blur-[140px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] h-[400px] w-[500px] rounded-full bg-brand-3/20 blur-[120px]" />
         <div
           className="absolute inset-0 opacity-[0.05]"
           style={{
@@ -42,7 +42,7 @@ export function Hero() {
             transition={{ duration: 0.6 }}
             className="inline-flex items-center gap-2 rounded-full border border-ink-border bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand"
           >
-            Fall / Winter Collection
+            Introducing Velocity Nova X
           </motion.span>
 
           <motion.h1
@@ -110,9 +110,14 @@ export function Hero() {
           className="relative h-[360px] sm:h-[440px] lg:h-[560px]"
         >
           <HeroCanvas />
-          <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 items-center gap-2 text-[11px] font-medium uppercase tracking-widest text-ink-fg-muted">
-            <MousePointer2 size={13} />
-            Drag to rotate
+          <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1">
+            <span className="text-xs font-semibold uppercase tracking-[0.15em] text-ink-fg">
+              Velocity Nova X
+            </span>
+            <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-widest text-ink-fg-muted">
+              <MousePointer2 size={13} />
+              Drag to rotate
+            </div>
           </div>
         </motion.div>
       </Container>

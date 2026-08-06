@@ -41,8 +41,8 @@ export function Categories() {
                   </div>
                   <p className="text-sm text-fg-muted">{cat.blurb}</p>
 
-                  <div className="pointer-events-none absolute -right-10 -bottom-10 h-40 w-40 rounded-full opacity-[0.12] blur-2xl transition-opacity duration-300 group-hover:opacity-25"
-                    style={{ background: sample?.art.accent ?? "#c2a878" }}
+                  <div className="pointer-events-none absolute -right-10 -bottom-10 h-40 w-40 rounded-full opacity-[0.28] blur-2xl transition-opacity duration-300 group-hover:opacity-50"
+                    style={{ background: sample?.art.accent ?? "#cb9328" }}
                   />
                 </Link>
               </motion.div>
