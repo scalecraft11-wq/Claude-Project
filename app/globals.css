@@ -2,12 +2,12 @@
 
 :root {
   /* Light "quiet luxury" surfaces */
-  --bg: #f7f7f5;
+  --bg: #eee7d9;
   --bg-elevated: #ffffff;
-  --bg-elevated-2: #f1efea;
+  --bg-elevated-2: #e6d9bc;
   --surface: #ffffff;
-  --border-subtle: #e5e7eb;
-  --border-strong: #d1d5db;
+  --border-subtle: #ddd2b8;
+  --border-strong: #c7b993;
   --fg: #181818;
   --fg-muted: #6b7280;
   --fg-faint: #9ca3af;
@@ -20,8 +20,8 @@
   --ink-fg-muted: #a3a3a3;
 
   /* Brand */
-  --brand: #c2a878;
-  --brand-2: #a68b5b;
+  --brand: #ad8342;
+  --brand-2: #8a6730;
   --brand-3: #b84545;
   --success: #4f7d5c;
 

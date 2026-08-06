@@ -28,7 +28,7 @@ export function Categories() {
               >
                 <Link
                   href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                  className="group relative flex h-56 flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-surface p-7 shadow-[0_1px_3px_rgba(24,24,24,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-[0_18px_36px_-16px_rgba(24,24,24,0.16)]"
+                  className="group relative flex h-56 flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-surface p-7 shadow-[0_2px_8px_rgba(24,24,24,0.07)] transition-all duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-[0_24px_44px_-16px_rgba(24,24,24,0.24)]"
                 >
                   <div className="flex items-start justify-between">
                     <h3 className="font-display text-2xl font-bold uppercase tracking-tight text-fg">

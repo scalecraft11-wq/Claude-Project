@@ -31,7 +31,7 @@ export function ProductCard({
       className="group relative"
     >
       <Link href={`/product/${product.slug}`} className="block">
-        <div className="relative overflow-hidden rounded-3xl border border-border-subtle bg-surface shadow-[0_1px_3px_rgba(24,24,24,0.05)] transition-all duration-300 group-hover:-translate-y-1 group-hover:border-border-strong group-hover:shadow-[0_18px_36px_-16px_rgba(24,24,24,0.18)]">
+        <div className="relative overflow-hidden rounded-3xl border border-border-subtle bg-surface shadow-[0_2px_8px_rgba(24,24,24,0.08)] transition-all duration-300 group-hover:-translate-y-1 group-hover:border-border-strong group-hover:shadow-[0_24px_44px_-16px_rgba(24,24,24,0.28)]">
           <div className="absolute left-3 top-3 z-10 flex flex-col gap-1.5">
             {product.isNew && <Badge tone="new">New</Badge>}
             {product.oldPrice && <Badge tone="sale">Sale</Badge>}
