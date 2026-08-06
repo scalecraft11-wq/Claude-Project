@@ -11,12 +11,12 @@ type BaseProps = {
 
 const variants: Record<NonNullable<BaseProps["variant"]>, string> = {
   primary:
-    "bg-brand text-black hover:shadow-[0_0_30px_-4px_var(--brand)] hover:-translate-y-0.5",
+    "bg-btn-bg text-white shadow-[0_8px_20px_-8px_rgba(24,24,24,0.45)] hover:bg-btn-hover hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-8px_rgba(24,24,24,0.5)]",
   secondary:
-    "bg-fg text-bg hover:bg-fg/90 hover:-translate-y-0.5",
+    "border border-brand text-brand-2 bg-transparent hover:bg-brand hover:text-white hover:-translate-y-0.5",
   outline:
-    "border border-border-strong text-fg hover:border-brand hover:text-brand bg-transparent",
-  ghost: "bg-transparent text-fg hover:bg-white/5",
+    "border border-border-strong text-fg bg-white hover:border-fg/40 hover:-translate-y-0.5 shadow-[0_1px_2px_rgba(24,24,24,0.04)]",
+  ghost: "bg-transparent text-fg hover:bg-black/[0.04]",
 };
 
 const sizes: Record<NonNullable<BaseProps["size"]>, string> = {

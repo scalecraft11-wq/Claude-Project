@@ -28,26 +28,21 @@ export function Categories() {
               >
                 <Link
                   href={`/shop?category=${encodeURIComponent(cat.name)}`}
-                  className="group relative flex h-56 flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle p-7 transition-all duration-300 hover:border-border-strong"
-                  style={{
-                    background: sample
-                      ? `linear-gradient(150deg, ${sample.art.upper}22, transparent 60%), var(--surface)`
-                      : "var(--surface)",
-                  }}
+                  className="group relative flex h-56 flex-col justify-between overflow-hidden rounded-3xl border border-border-subtle bg-surface p-7 shadow-[0_1px_3px_rgba(24,24,24,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-[0_18px_36px_-16px_rgba(24,24,24,0.16)]"
                 >
                   <div className="flex items-start justify-between">
-                    <h3 className="font-display text-2xl font-extrabold uppercase tracking-tight">
+                    <h3 className="font-display text-2xl font-bold uppercase tracking-tight text-fg">
                       {cat.name}
                     </h3>
                     <ArrowUpRight
                       size={20}
-                      className="text-fg-faint transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand"
+                      className="text-fg-faint transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand-2"
                     />
                   </div>
                   <p className="text-sm text-fg-muted">{cat.blurb}</p>
 
-                  <div className="pointer-events-none absolute -right-8 -bottom-8 h-40 w-40 rounded-full opacity-20 blur-2xl transition-opacity duration-300 group-hover:opacity-40"
-                    style={{ background: sample?.art.accent ?? "#d7ff3f" }}
+                  <div className="pointer-events-none absolute -right-10 -bottom-10 h-40 w-40 rounded-full opacity-[0.12] blur-2xl transition-opacity duration-300 group-hover:opacity-25"
+                    style={{ background: sample?.art.accent ?? "#c2a878" }}
                   />
                 </Link>
               </motion.div>

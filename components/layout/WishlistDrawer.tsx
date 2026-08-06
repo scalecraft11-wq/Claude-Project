@@ -42,7 +42,7 @@ export function WishlistDrawer() {
               <button
                 onClick={closeWishlist}
                 aria-label="Close wishlist"
-                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-white/5"
+                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-black/[0.04]"
               >
                 <X size={18} />
               </button>
@@ -50,7 +50,7 @@ export function WishlistDrawer() {
 
             {wishlistedProducts.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-black/[0.04]">
                   <Heart size={26} className="text-fg-faint" />
                 </div>
                 <p className="text-fg-muted">Nothing saved yet.</p>

@@ -43,7 +43,7 @@ export function Navbar() {
       >
         <div className="mx-auto flex h-18 max-w-[1400px] items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
           <Link href="/" className="group flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-black">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#181818] text-brand">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
                 <path d="M3 17L10 6L14 13L21 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -81,14 +81,14 @@ export function Navbar() {
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-white/5 hover:text-fg"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-black/[0.04] hover:text-fg"
             >
               <Search size={19} />
             </button>
             <button
               onClick={openWishlist}
               aria-label="Wishlist"
-              className="relative flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-white/5 hover:text-fg"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-black/[0.04] hover:text-fg"
             >
               <Heart size={19} />
               {productIds.length > 0 && (
@@ -100,7 +100,7 @@ export function Navbar() {
             <button
               onClick={openCart}
               aria-label="Cart"
-              className="relative flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-white/5 hover:text-fg"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-black/[0.04] hover:text-fg"
             >
               <ShoppingBag size={19} />
               {totalItems > 0 && (
@@ -112,7 +112,7 @@ export function Navbar() {
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
-              className="ml-1 flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-white/5 hover:text-fg lg:hidden"
+              className="ml-1 flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-black/[0.04] hover:text-fg lg:hidden"
             >
               <Menu size={20} />
             </button>

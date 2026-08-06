@@ -35,11 +35,11 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border-subtle bg-bg-elevated">
+    <footer className="bg-ink text-ink-fg">
       <Container className="py-16 lg:py-20">
         <Newsletter />
 
-        <div className="mt-16 grid grid-cols-2 gap-10 border-t border-border-subtle pt-14 lg:grid-cols-5">
+        <div className="mt-16 grid grid-cols-2 gap-10 border-t border-ink-border pt-14 lg:grid-cols-5">
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2">
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-black">
@@ -53,11 +53,11 @@ export function Footer() {
                   />
                 </svg>
               </span>
-              <span className="font-display text-xl font-extrabold uppercase tracking-tight">
+              <span className="font-display text-xl font-extrabold uppercase tracking-tight text-ink-fg">
                 Velocity
               </span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-fg-muted">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-fg-muted">
               Premium performance sneakers engineered for speed, comfort, and
               everyday style. Move beyond limits.
             </p>
@@ -67,7 +67,7 @@ export function Footer() {
                   key={i}
                   href="#"
                   aria-label="Social link"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-border-subtle text-fg-muted transition-colors hover:border-brand hover:text-brand"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-ink-border text-ink-fg-muted transition-colors hover:border-brand hover:text-brand"
                 >
                   <Icon size={15} />
                 </a>
@@ -77,7 +77,7 @@ export function Footer() {
 
           {columns.map((col) => (
             <div key={col.title}>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-fg-faint">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-ink-fg-muted">
                 {col.title}
               </h4>
               <ul className="mt-4 flex flex-col gap-3">
@@ -85,7 +85,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-fg-muted transition-colors hover:text-brand"
+                      className="text-sm text-ink-fg-muted transition-colors hover:text-brand"
                     >
                       {link.label}
                     </Link>
@@ -96,13 +96,13 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 text-xs text-fg-faint sm:flex-row">
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-ink-border pt-8 text-xs text-ink-fg-muted sm:flex-row">
           <p>© {new Date().getFullYear()} Velocity Shoes, Inc. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/contact" className="hover:text-fg-muted">
+            <Link href="/contact" className="hover:text-ink-fg">
               Privacy Policy
             </Link>
-            <Link href="/contact" className="hover:text-fg-muted">
+            <Link href="/contact" className="hover:text-ink-fg">
               Terms of Service
             </Link>
           </div>

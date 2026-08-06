@@ -31,7 +31,7 @@ export function ProductCard({
       className="group relative"
     >
       <Link href={`/product/${product.slug}`} className="block">
-        <div className="relative overflow-hidden rounded-3xl border border-border-subtle bg-surface transition-colors duration-300 group-hover:border-border-strong">
+        <div className="relative overflow-hidden rounded-3xl border border-border-subtle bg-surface shadow-[0_1px_3px_rgba(24,24,24,0.05)] transition-all duration-300 group-hover:-translate-y-1 group-hover:border-border-strong group-hover:shadow-[0_18px_36px_-16px_rgba(24,24,24,0.18)]">
           <div className="absolute left-3 top-3 z-10 flex flex-col gap-1.5">
             {product.isNew && <Badge tone="new">New</Badge>}
             {product.oldPrice && <Badge tone="sale">Sale</Badge>}
@@ -44,15 +44,15 @@ export function ProductCard({
             }}
             aria-label="Toggle wishlist"
             className={cn(
-              "absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-black/40 backdrop-blur-md transition-colors hover:bg-black/60",
-              wishlisted && "text-brand-3"
+              "absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-border-subtle bg-white/90 shadow-sm backdrop-blur-md transition-colors hover:bg-white",
+              wishlisted ? "text-brand-3" : "text-fg-muted"
             )}
           >
             <Heart size={16} className={cn(wishlisted && "fill-brand-3")} />
           </button>
 
-          <div className="relative aspect-[4/3.4] w-full overflow-hidden bg-gradient-to-b from-bg-elevated-2 to-bg-elevated p-6 transition-transform duration-500 group-hover:scale-[1.04]">
-            <SneakerArt art={product.art} className="drop-shadow-2xl" />
+          <div className="relative aspect-[10/9] w-full overflow-hidden bg-gradient-to-b from-bg-elevated-2 to-bg-elevated p-5 transition-transform duration-500 ease-out group-hover:scale-[1.05]">
+            <SneakerArt art={product.art} className="drop-shadow-xl" />
           </div>
         </div>
 
@@ -61,7 +61,7 @@ export function ProductCard({
             <p className="text-[11px] font-semibold uppercase tracking-widest text-fg-faint">
               {product.category}
             </p>
-            <h3 className="mt-1 truncate font-display text-lg font-bold leading-tight">
+            <h3 className="mt-1 truncate font-display text-lg font-bold leading-tight text-fg">
               {product.name}
             </h3>
             <div className="mt-1.5 flex items-center gap-2">
@@ -91,7 +91,7 @@ export function ProductCard({
             quantity: 1,
           })
         }
-        className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-border-subtle py-2.5 text-xs font-semibold uppercase tracking-wider text-fg-muted opacity-0 transition-all duration-300 hover:border-brand hover:text-brand group-hover:opacity-100"
+        className="mt-3 flex w-full translate-y-1 items-center justify-center gap-2 rounded-full bg-[#181818] py-2.5 text-xs font-semibold uppercase tracking-wider text-white opacity-0 shadow-[0_6px_16px_-6px_rgba(24,24,24,0.4)] transition-all duration-300 hover:bg-[#2b2b2b] group-hover:translate-y-0 group-hover:opacity-100"
       >
         <ShoppingBag size={14} />
         Quick Add

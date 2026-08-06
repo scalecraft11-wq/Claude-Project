@@ -60,7 +60,7 @@ export function ProductInfo({ product }: { product: Product }) {
         <p className="text-xs font-semibold uppercase tracking-widest text-fg-faint">
           {product.category}
         </p>
-        <h1 className="mt-2 font-display text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">
+        <h1 className="mt-2 font-display text-4xl font-bold leading-[1.1] tracking-tight text-fg sm:text-5xl">
           {product.name}
         </h1>
         <div className="mt-3 flex items-center gap-3">

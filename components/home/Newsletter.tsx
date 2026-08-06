@@ -25,7 +25,7 @@ export function Newsletter() {
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-brand">
             Join The Movement
           </span>
-          <h3 className="mt-3 font-display text-3xl font-extrabold uppercase leading-[0.95] sm:text-4xl">
+          <h3 className="mt-3 font-display text-3xl font-bold leading-tight text-fg sm:text-4xl">
             Get 15% off your first order
           </h3>
           <p className="mt-3 text-sm text-fg-muted">
@@ -38,7 +38,7 @@ export function Newsletter() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex items-center gap-3 rounded-full border border-brand/40 bg-brand/10 px-5 py-4 text-sm font-medium text-brand"
+              className="flex items-center gap-3 rounded-full border border-success/30 bg-success/10 px-5 py-4 text-sm font-medium text-success"
             >
               <Check size={18} />
               You&rsquo;re on the list. Welcome to Velocity.

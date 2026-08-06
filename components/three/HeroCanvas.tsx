@@ -12,10 +12,10 @@ export function HeroCanvas() {
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true }}
     >
-      <ambientLight intensity={0.55} />
-      <directionalLight position={[4, 5, 3]} intensity={1.6} color="#ffffff" />
-      <directionalLight position={[-4, 2, -3]} intensity={0.8} color="#8b5cf6" />
-      <pointLight position={[0, -1, 3]} intensity={0.6} color="#d7ff3f" />
+      <ambientLight intensity={0.45} />
+      <directionalLight position={[4, 5, 3]} intensity={1.7} color="#fff6ea" />
+      <directionalLight position={[-4, 2, -3]} intensity={0.55} color="#c2a878" />
+      <pointLight position={[0, -1, 3]} intensity={0.35} color="#e8c99a" />
 
       <Suspense fallback={null}>
         <PresentationControls

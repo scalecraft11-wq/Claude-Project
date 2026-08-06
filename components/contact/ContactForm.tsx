@@ -25,9 +25,9 @@ export function ContactForm() {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-brand/30 bg-brand/5 px-8 py-16 text-center"
+        className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-success/25 bg-success/5 px-8 py-16 text-center"
       >
-        <CheckCircle2 size={40} className="text-brand" />
+        <CheckCircle2 size={40} className="text-success" />
         <h3 className="font-display text-2xl font-bold uppercase tracking-tight">
           Message Sent
         </h3>
@@ -110,7 +110,7 @@ export function ContactForm() {
               exit={{ opacity: 0 }}
               className="flex items-center gap-2"
             >
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-black/30 border-t-black" />
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
               Sending...
             </motion.span>
           ) : (

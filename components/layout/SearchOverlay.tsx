@@ -83,7 +83,7 @@ export function SearchOverlay({
                     key={product.id}
                     href={`/product/${product.slug}`}
                     onClick={onClose}
-                    className="flex items-center gap-4 rounded-2xl p-3 transition-colors hover:bg-white/5"
+                    className="flex items-center gap-4 rounded-2xl p-3 transition-colors hover:bg-black/[0.04]"
                   >
                     <div className="h-14 w-14 shrink-0 rounded-xl bg-bg-elevated-2 p-2">
                       <SneakerArt art={product.art} glow={false} />

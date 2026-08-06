@@ -37,10 +37,10 @@ export default function ContactPage() {
     <div className="py-16 lg:py-24">
       <Container>
         <Reveal className="mx-auto mb-16 max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-black/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand-2">
             Get In Touch
           </span>
-          <h1 className="mt-5 font-display text-5xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl">
+          <h1 className="mt-5 font-display text-5xl font-bold leading-[1.05] tracking-tight text-fg sm:text-6xl">
             We&rsquo;d love to hear from you
           </h1>
           <p className="mx-auto mt-5 max-w-lg text-fg-muted">
@@ -72,7 +72,7 @@ export default function ContactPage() {
         <div className="mt-16 grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <Reveal>
             <div className="rounded-[2rem] border border-border-subtle bg-surface p-7 sm:p-10">
-              <h2 className="mb-6 font-display text-2xl font-extrabold uppercase tracking-tight">
+              <h2 className="mb-6 font-display text-2xl font-bold tracking-tight text-fg">
                 Send us a message
               </h2>
               <ContactForm />
@@ -82,19 +82,19 @@ export default function ContactPage() {
           <Reveal delay={0.1}>
             <div className="relative h-full min-h-[420px] overflow-hidden rounded-[2rem] border border-border-subtle bg-bg-elevated-2">
               <div
-                className="absolute inset-0 opacity-30"
+                className="absolute inset-0 opacity-70"
                 style={{
                   backgroundImage:
-                    "linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)",
+                    "linear-gradient(to right, #18181808 1px, transparent 1px), linear-gradient(to bottom, #18181808 1px, transparent 1px)",
                   backgroundSize: "34px 34px",
                 }}
               />
-              <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/10 blur-[80px]" />
+              <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/15 blur-[80px]" />
               <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-black shadow-[0_0_40px_-6px_var(--brand)]">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white shadow-[0_10px_28px_-8px_rgba(194,168,120,0.55)]">
                   <MapPin size={22} />
                 </span>
-                <div className="rounded-xl border border-border-subtle bg-bg/80 px-4 py-2 text-center backdrop-blur">
+                <div className="rounded-xl border border-border-subtle bg-white/90 px-4 py-2 text-center shadow-sm backdrop-blur">
                   <p className="text-sm font-semibold text-fg">Velocity Studio HQ</p>
                   <p className="text-xs text-fg-faint">482 Velocity Ave, Portland, OR</p>
                 </div>

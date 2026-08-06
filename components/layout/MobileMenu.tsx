@@ -42,7 +42,7 @@ export function MobileMenu({
               <button
                 onClick={onClose}
                 aria-label="Close menu"
-                className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-white/5"
+                className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-black/[0.04]"
               >
                 <X size={20} />
               </button>

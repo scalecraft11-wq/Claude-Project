@@ -6,9 +6,9 @@ import { RoundedBox, MeshDistortMaterial } from "@react-three/drei";
 import type { Group } from "three";
 
 export function ShoeModel({
-  upperColor = "#101012",
-  soleColor = "#d7ff3f",
-  accentColor = "#d7ff3f",
+  upperColor = "#141414",
+  soleColor = "#c2a878",
+  accentColor = "#c2a878",
 }: {
   upperColor?: string;
   soleColor?: string;
@@ -37,7 +37,7 @@ export function ShoeModel({
 
         {/* sole accent pop of color along midsole edge */}
         <RoundedBox args={[3.35, 0.09, 0.98]} radius={0.045} smoothness={4} position={[0, 0.11, 0]}>
-          <meshStandardMaterial color={soleColor} roughness={0.5} />
+          <meshStandardMaterial color={soleColor} roughness={0.3} metalness={0.55} />
         </RoundedBox>
 
         {/* main upper shell - single smooth tapered pill */}
@@ -54,7 +54,7 @@ export function ShoeModel({
 
         {/* heel pull tab */}
         <RoundedBox args={[0.34, 0.4, 0.62]} radius={0.15} smoothness={4} position={[-1.42, 1.0, 0]}>
-          <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={0.35} roughness={0.4} />
+          <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={0.08} roughness={0.3} metalness={0.55} />
         </RoundedBox>
 
         {/* collar opening rim */}
@@ -73,11 +73,11 @@ export function ShoeModel({
         {/* side speed-stripe accent, flush on both faces */}
         <mesh position={[0.15, 0.68, 0.435]} rotation={[0, 0, 0.16]}>
           <boxGeometry args={[1.7, 0.26, 0.035]} />
-          <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={0.45} roughness={0.35} />
+          <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={0.1} roughness={0.25} metalness={0.6} />
         </mesh>
         <mesh position={[0.15, 0.68, -0.435]} rotation={[0, 0, 0.16]}>
           <boxGeometry args={[1.7, 0.26, 0.035]} />
-          <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={0.45} roughness={0.35} />
+          <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={0.1} roughness={0.25} metalness={0.6} />
         </mesh>
 
         {/* toe cap taper */}

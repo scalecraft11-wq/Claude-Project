@@ -16,7 +16,7 @@ export function ProductGrid({
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center gap-4 py-24 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-black/[0.04]">
           <SearchX size={26} className="text-fg-faint" />
         </div>
         <p className="text-lg font-medium text-fg">No products found</p>

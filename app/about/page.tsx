@@ -71,10 +71,10 @@ export default function AboutPage() {
         </div>
         <Container className="relative">
           <Reveal className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-black/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand-2">
               Our Story
             </span>
-            <h1 className="mt-5 font-display text-5xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
+            <h1 className="mt-5 font-display text-5xl font-bold leading-[1.05] tracking-tight text-fg sm:text-6xl lg:text-7xl">
               Built for those who
               <span className="text-gradient"> refuse to stand still</span>
             </h1>
@@ -93,7 +93,7 @@ export default function AboutPage() {
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-brand">
               Since 2018
             </span>
-            <h2 className="mt-4 font-display text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">
+            <h2 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-fg sm:text-5xl">
               From a garage prototype to a global movement
             </h2>
             <div className="mt-6 flex flex-col gap-4 text-fg-muted">
@@ -130,7 +130,7 @@ export default function AboutPage() {
               <div className="absolute -left-10 -top-10 h-56 w-56 rounded-full bg-brand/15 blur-[100px]" />
               <div className="absolute -bottom-10 -right-10 h-56 w-56 rounded-full bg-brand-2/15 blur-[100px]" />
               <SneakerArt
-                art={{ upper: "#111214", sole: "#d7ff3f", accent: "#8b5cf6", laces: "#f4f4f0" }}
+                art={{ upper: "#181818", sole: "#c2a878", accent: "#c2a878", laces: "#f4f4f0" }}
                 className="relative"
               />
             </div>
@@ -153,7 +153,7 @@ export default function AboutPage() {
                   <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand/10 text-brand">
                     <value.icon size={20} />
                   </div>
-                  <h3 className="font-display text-lg font-bold uppercase tracking-tight">
+                  <h3 className="font-display text-lg font-bold tracking-tight text-fg">
                     {value.title}
                   </h3>
                   <p className="text-sm leading-relaxed text-fg-muted">
@@ -172,10 +172,10 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((item, i) => (
               <Reveal key={item.step} delay={i * 0.08} className="relative">
-                <span className="font-display text-5xl font-extrabold text-white/10">
+                <span className="font-display text-5xl font-extrabold text-black/[0.06]">
                   {item.step}
                 </span>
-                <h3 className="-mt-3 font-display text-xl font-bold uppercase tracking-tight">
+                <h3 className="-mt-3 font-display text-xl font-bold tracking-tight text-fg">
                   {item.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-fg-muted">
@@ -191,7 +191,7 @@ export default function AboutPage() {
         <Container>
           <Reveal className="relative overflow-hidden rounded-[2rem] border border-border-subtle bg-gradient-to-br from-bg-elevated-2 via-surface to-bg-elevated-2 px-8 py-16 text-center sm:px-16">
             <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand/15 blur-[120px]" />
-            <h2 className="relative font-display text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">
+            <h2 className="relative font-display text-4xl font-bold leading-[1.05] tracking-tight text-fg sm:text-5xl">
               Ready to move beyond limits?
             </h2>
             <p className="relative mx-auto mt-4 max-w-md text-fg-muted">

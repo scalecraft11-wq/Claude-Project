@@ -81,7 +81,7 @@ export function ShopContent() {
           <span className="text-xs font-semibold uppercase tracking-[0.25em] text-brand">
             Shop All
           </span>
-          <h1 className="font-display text-5xl font-extrabold uppercase tracking-tight sm:text-6xl">
+          <h1 className="font-display text-5xl font-bold tracking-tight text-fg sm:text-6xl">
             Every Pair
           </h1>
         </div>
@@ -144,7 +144,7 @@ export function ShopContent() {
             >
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="mb-6 flex h-9 w-9 items-center justify-center rounded-full hover:bg-white/5"
+                className="mb-6 flex h-9 w-9 items-center justify-center rounded-full hover:bg-black/[0.04]"
               >
                 <X size={18} />
               </button>

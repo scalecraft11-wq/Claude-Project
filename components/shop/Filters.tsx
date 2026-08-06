@@ -77,7 +77,7 @@ export function Filters({
                 type="checkbox"
                 checked={filters.categories.includes(cat.name)}
                 onChange={() => toggleCategory(cat.name)}
-                className="h-4 w-4 rounded border-border-strong bg-transparent accent-[#d7ff3f]"
+                className="h-4 w-4 rounded border-border-strong bg-transparent accent-[#c2a878]"
               />
               {cat.name}
             </label>
@@ -98,7 +98,7 @@ export function Filters({
           onChange={(e) =>
             setFilters((prev) => ({ ...prev, maxPrice: Number(e.target.value) }))
           }
-          className="w-full accent-[#d7ff3f]"
+          className="w-full accent-[#c2a878]"
         />
       </div>
 

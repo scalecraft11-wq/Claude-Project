@@ -7,10 +7,10 @@ export default function NotFound() {
     <div className="relative flex min-h-[70vh] items-center overflow-hidden py-20">
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/10 blur-[140px]" />
       <Container className="relative flex flex-col items-center text-center">
-        <span className="font-display text-[9rem] font-extrabold leading-none text-white/10 sm:text-[12rem]">
+        <span className="font-display text-[9rem] font-extrabold leading-none text-black/[0.05] sm:text-[12rem]">
           404
         </span>
-        <h1 className="-mt-6 font-display text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">
+        <h1 className="-mt-6 font-display text-3xl font-bold tracking-tight text-fg sm:text-4xl">
           Off the beaten path
         </h1>
         <p className="mt-4 max-w-md text-fg-muted">

@@ -34,7 +34,7 @@ export function ProductGallery({ product }: { product: Product }) {
         </AnimatePresence>
 
         {product.isNew && (
-          <span className="absolute left-5 top-5 rounded-full bg-brand-2 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white">
+          <span className="absolute left-5 top-5 rounded-full bg-[#181818] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
             New
           </span>
         )}
