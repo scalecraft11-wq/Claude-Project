@@ -40,7 +40,7 @@ function HeroShoePhoto() {
         className="animate-float relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[2rem] border border-ink-border shadow-[0_40px_80px_-24px_rgba(0,0,0,0.6)]"
       >
         <Image
-          src="/images/hero/velocity-nova-x.jpg"
+          src="/images/hero/velocity-nova-x.png"
           alt="Velocity Nova X sneaker"
           fill
           priority
