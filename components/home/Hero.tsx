@@ -1,22 +1,57 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
-import { ArrowRight, MousePointer2 } from "lucide-react";
+import Image from "next/image";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 
-const HeroCanvas = dynamic(
-  () => import("@/components/three/HeroCanvas").then((m) => m.HeroCanvas),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-full w-full items-center justify-center">
-        <div className="h-40 w-40 animate-pulse-glow rounded-full bg-brand/20 blur-2xl" />
-      </div>
-    ),
+function HeroShoePhoto() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), {
+    stiffness: 150,
+    damping: 18,
+  });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), {
+    stiffness: 150,
+    damping: 18,
+  });
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
   }
-);
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  return (
+    <div
+      className="[perspective:1200px]"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div
+        style={{ rotateX, rotateY }}
+        className="animate-float relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[2rem] border border-ink-border shadow-[0_40px_80px_-24px_rgba(0,0,0,0.6)]"
+      >
+        <Image
+          src="/images/hero/velocity-nova-x.jpg"
+          alt="Velocity Nova X sneaker"
+          fill
+          priority
+          sizes="(max-width: 1024px) 90vw, 480px"
+          className="object-cover"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+      </motion.div>
+    </div>
+  );
+}
 
 export function Hero() {
   return (
@@ -104,20 +139,15 @@ export function Hero() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="relative h-[360px] sm:h-[440px] lg:h-[560px]"
+          className="relative"
         >
-          <HeroCanvas />
-          <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1">
-            <span className="text-xs font-semibold uppercase tracking-[0.15em] text-ink-fg">
-              Velocity Nova X
-            </span>
-            <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-widest text-ink-fg-muted">
-              <MousePointer2 size={13} />
-              Drag to rotate
-            </div>
+          <HeroShoePhoto />
+          <div className="pointer-events-none absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 text-[11px] font-medium uppercase tracking-widest text-ink-fg-muted">
+            <Sparkles size={13} className="text-brand" />
+            Velocity Nova X
           </div>
         </motion.div>
       </Container>
